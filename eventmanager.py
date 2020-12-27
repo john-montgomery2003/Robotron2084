@@ -1,38 +1,39 @@
-class EventManager(object):
+from event import *
+
+
+class EventManager:
     """
-    We coordinate communication between the Model, View, and Controller.
+    Controls the flow of events between the M, V and C
     """
 
     def __init__(self):
-        from weakref import WeakKeyDictionary
-        self.listeners = WeakKeyDictionary()
-
-    def RegisterListener(self, listener):
         """
-        Adds a listener to our spam list.
-        It will receive Post()ed events through it's notify(event) call.
+        Weak ref stops us needing to remove objects from the dict as they will end up deleted when the objects instance
+        is used. This will stop the dict becoming bloated and stop me from needing to remember to remove items from it.
         """
 
-        self.listeners[listener] = 1
+        self.listeners = []
 
-    def UnregisterListener(self, listener):
+    def add_listener(self, listener):
         """
-        Remove a listener from our spam list.
-        This is implemented but hardly used.
-        Our weak ref spam list will auto remove any listeners who stop existing.
+        This adds an object as a listener
+        """
+        self.listeners.append(listener)
+
+    def remove_listener(self, listener):
+        """
+        This is to stop objects listening, but due to the weak referencing it doesnt end up used much
         """
 
-        if listener in self.listeners.keys():
+        if listener in self.listeners:
             del self.listeners[listener]
 
-    def Post(self, event):
+    def post(self, event):
         """
-        Post a new event to the message queue.
-        It will be broadcast to all listeners.
+        This will emit a message to all the objects in the listen dict
+        if it isn't a tick then we also print that event - mostly to debug
         """
-
-        if not isinstance(event, TickEvent):
-            # print the event (unless it is TickEvent)
+        if not isinstance(event, Tick):
             print(str(event))
-        for listener in self.listeners.keys():
+        for listener in self.listeners:
             listener.notify(event)

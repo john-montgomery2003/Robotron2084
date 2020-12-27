@@ -14,6 +14,15 @@ class EndGame(Event):
     def __init__(self):
         self.name = 'End Game'
 
+
+class Start(Event):
+    """
+    This event is sent at the start of the game
+    """
+    def __init__(self):
+        self.name = 'Start Game'
+
+
 class Tick(Event):
     """
     A tick
