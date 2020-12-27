@@ -5,10 +5,10 @@ import controller
 
 def run():
     evManager = eventmanager.EventManager()
-
-    graphics = views.GraphicalView(evManager)
-    keyboard = controller.KeyboardController(evManager)
     gamemodel = model.Game(evManager)
+    graphics = views.GraphicalView(evManager, gamemodel)
+    keyboard = controller.KeyboardController(evManager, gamemodel)
+
     gamemodel.run()
 
 if __name__ == '__main__':
