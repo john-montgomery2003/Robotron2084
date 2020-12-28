@@ -1,4 +1,4 @@
-from characters import Character
+from characters_module.characters import Character
 
 class Player(Character):
     def __init__(self):

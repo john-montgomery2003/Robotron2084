@@ -2,7 +2,7 @@ from event import *
 from statemachine import StateMachine
 
 STATE_INTRO = 1
-STATE_MENU = 2
+STATE_TEST = 2
 STATE_HELP = 3
 STATE_ABOUT = 4
 STATE_PLAY = 5
@@ -31,10 +31,11 @@ class Game:
         self.on = False
 
 
-    def run(self):
+    def run(self, mode='norm'):
         self.on = True
         self.eventManager.post(Start())
-        self.statem.push(STATE_MENU)
+        if mode == 'test':
+            self.statem.push(STATE_TEST)
         while self.on:
             newTick = Tick()
             self.eventManager.post(newTick)

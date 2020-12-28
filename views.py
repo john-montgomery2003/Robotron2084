@@ -6,6 +6,7 @@ from constants.const import *
 from objects.bullet import Bullet
 from decorations.border import Border
 import random
+
 class GraphicalView(object):
     """
     Draws the model state onto the screen.
@@ -55,7 +56,7 @@ class GraphicalView(object):
             pygame.quit()
         elif isinstance(event_in, Tick) or isinstance(event_in, Keyboard) or isinstance(event_in, KeyboardUp):
             currentstate = self.model.statem.peek()
-            if currentstate == model.STATE_MENU:
+            if currentstate == model.STATE_TEST:
                 self.rendertest(event_in)
             if currentstate == model.STATE_PLAY:
                 self.renderplay()
