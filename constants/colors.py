@@ -1,0 +1,20 @@
+BLACK = (0, 0, 0)
+GREY = (61, 61, 61)
+BROWN = (40, 28, 14)
+PURPLE = (33, 19, 52)
+GREEN = (23, 40, 19)
+LIGHTGREY = (70, 70, 70)
+TEAL = (18, 51, 54)
+YELLOW = (85, 80, 52)
+RED = (76, 14, 33)
+
+BULLETS = [
+    GREY,
+    BROWN,
+    PURPLE,
+    GREEN,
+    LIGHTGREY,
+    TEAL,
+    YELLOW,
+    RED
+]

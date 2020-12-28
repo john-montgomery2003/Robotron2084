@@ -1,4 +1,0 @@
-VELOCITY = 8
-SCREENSIZE = (800,600)
-TPS = 14
-TITLE = 'Robotron 2084'

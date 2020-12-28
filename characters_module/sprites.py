@@ -1,5 +1,5 @@
 import pygame
-import colors as COLS
+from constants import colors as COLS
 
 
 def getImage(sheet, rectangle):

@@ -1,9 +1,11 @@
 import pygame
 import model
 from event import *
-from characters import Player
-from const import *
-
+from characters_module.player import Player
+from constants.const import *
+from objects.bullet import Bullet
+from decorations.border import Border
+import random
 class GraphicalView(object):
     """
     Draws the model state onto the screen.
@@ -36,6 +38,10 @@ class GraphicalView(object):
             115: 0,
             119: 0
         }
+        self.spriteslist = pygame.sprite.Group()
+        self.border = Border()
+        self.spriteslist.add(self.border)
+        self.lastshot = 0
 
     def notify(self, event_in):
         """
@@ -65,48 +71,69 @@ class GraphicalView(object):
         """
         player = self.player
 
+        if not self.isinitialized:
+            return
+
         if isinstance(event, Keyboard):
             self.currentDown[event.key] = 1
 
         if isinstance(event, KeyboardUp):
             self.currentDown[event.key] = 0
 
+        shoot = ''
+        v = VELOCITY if sum(self.currentDown.values())>1 else DVELOCITY
         for key in self.currentDown.keys():
             if self.currentDown[key]:
                 if key == 119:
-                    player.setmovy(-VELOCITY)
+                    player.movy(-v)
                 if key == 115:
-                    player.setmovy(VELOCITY)
+                    player.movy(v)
                 if key == 97:
-                    player.setmovx(-VELOCITY)
+                    player.movx(-v)
                 if key == 100:
-                    player.setmovx(VELOCITY)
+                    player.movx(v)
+                if len(shoot) < 3:
+                    if key == 105:
+                        shoot += 'N'
+                    if key == 107:
+                        shoot += 'S'
+                    if key == 106:
+                        shoot += 'W'
+                    if key == 108:
+                        shoot += 'E'
+
+        if shoot:
+            if self.lastshot == 0:
+                bullet = Bullet(player.position[0], player.position[1],shoot)
+                self.spriteslist.add(bullet)
+                self.lastshot += COOLDOWN
+            else:
+                self.lastshot -= 1
 
 
-        self.skincount += 1
+        self.spriteslist.update()
+        game_surface = pygame.Surface(SCREENSIZE, pygame.SRCALPHA, 32)
+        game_surface = game_surface.convert_alpha()
+        self.spriteslist.draw(game_surface)
+
+        self.skincount += random.randint(0,1)
         if self.skincount > 2:
             self.skincount = 0
 
-        if not self.isinitialized:
-            return
+
         # clear display
         self.screen.fill((10,10,10))
         # draw some words on the screen
-
-        if self.currentDown[97]:
-            player.setdir('W')
-        if self.currentDown[100]:
-            player.setdir('E')
-        if self.currentDown[119]:
-            player.setdir('N')
-        if self.currentDown[115]:
-            player.setdir('S')
 
         somewords = self.smallfont.render(
             'This is a testing screen',
             True,
             (0, 255, 0))
-        self.screen.blit(somewords, (225, 0))
+        width, _ = pygame.font.Font.size(self.smallfont, 'This is a testing screen')
+        position_font = (SCREENSIZE[0] - width) /2
+        self.screen.blit(somewords, (position_font, 0))
+
+        self.screen.blit(game_surface, (0, 0))
         self.screen.blit(player.getskin(self.skincount), player.position)
         self.clock.tick(TPS)
         # flip the display to show whatever we drew
@@ -123,6 +150,6 @@ class GraphicalView(object):
         pygame.display.set_caption(TITLE)
         self.screen = pygame.display.set_mode(SCREENSIZE)
         self.clock = pygame.time.Clock()
-        self.smallfont = pygame.font.Font(None, 40)
+        self.smallfont = pygame.font.Font('font/robotron-2084.ttf', 28)
         self.isinitialized = True
         self.player = Player()
