@@ -1,9 +1,10 @@
 
 import pygame
+
 from event import *
 
 
-class KeyboardController:
+class Controller:
     def __init__(self, eventManager, model):
         self.eventManager = eventManager
         eventManager.add_listener(self)
@@ -18,11 +19,14 @@ class KeyboardController:
                     self.eventManager.post(EndGame())
                 if event.type == pygame.KEYDOWN:
                     if event.key != pygame.K_ESCAPE:
-                        self.eventManager.post(Keyboard(event.key))
+                        if event.key != pygame.K_BACKSPACE:
+                            self.eventManager.post(Keyboard(event.key,event.unicode))
+                        else:
+                            self.eventManager.post(Keyboard(event.key, 'backspace'))
                     else:
                         self.eventManager.post(EndGame())
                 if event.type == pygame.KEYUP:
-                    if event.key != pygame.K_ESCAPE:
-                        self.eventManager.post(KeyboardUp(event.key))
-                    else:
-                        self.eventManager.post(EndGame())
+                    self.eventManager.post(KeyboardUp(event.key))
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.eventManager.post(Mouse(event.pos))

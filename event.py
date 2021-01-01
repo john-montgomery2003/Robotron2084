@@ -36,11 +36,12 @@ class Keyboard(Event):
     """
     Event for keyboard clicks
     """
-    def __init__(self, keys):
+    def __init__(self, keys, letter):
         self.name = 'Keyboard'
         self.key = keys
+        self.uni = letter
     def __str__(self):
-        return f"Keypress - {self.key}"
+        return f"Keypress - {self.uni}"
 
 class KeyboardUp(Event):
     """
@@ -51,6 +52,16 @@ class KeyboardUp(Event):
         self.key = keys
     def __str__(self):
         return f"Key release - {self.key}"
+
+class Mouse(Event):
+    """
+    Event for mouse clicks
+    """
+    def __init__(self, pos):
+        self.name = 'Mouse'
+        self.pos = pos
+    def __str__(self):
+        return f"Mouse - {self.pos}"
 
 class ChangeState(Event):
     def __init__(self, newState):
