@@ -1,6 +1,7 @@
 from pygame import sprite, image, transform
 from characters_module import sprites
 from constants.const import *
+from characters_module.sprites import stretech_image
 
 class Character(sprite.Sprite):
     def __init__(self, sheetname):
@@ -50,3 +51,9 @@ class Character(sprite.Sprite):
         if (BORDER_W-10 < self.position[0] + newMov < SCREENSIZE[0]-BORDER_W*2 -10):
             self.position =  (self.position[0]+newMov,self.position[1])
         self.setdir(newMov, 1)
+
+    def onstart(self, view):
+        view.screen.fill((0, 0, 0))
+        img, h = stretech_image(self.u_images[0], 30-view.tickcounter)
+        posx, posy = self.position
+        view.screen.blit(img, (posx, posy - h / 2))

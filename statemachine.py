@@ -10,7 +10,7 @@ class StateMachine:
 
     def pop(self):
         try:
-            self.stack.pop()
+            self.stack =  self.stack[1:]
             return len(self.stack) > 0
         except IndexError:
             return None

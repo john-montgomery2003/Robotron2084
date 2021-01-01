@@ -1,11 +1,8 @@
 from event import *
 from statemachine import StateMachine
 
-STATE_INTRO = 1
-STATE_TEST = 2
-STATE_HELP = 3
-STATE_ABOUT = 4
-STATE_PLAY = 5
+from states import *
+
 
 class Game:
     def __init__(self, eventManager):
@@ -36,6 +33,10 @@ class Game:
         self.eventManager.post(Start())
         if mode == 'test':
             self.statem.push(STATE_TEST)
+        elif mode == 'light':
+            pass
+        else:
+            self.statem.push(STATE_INTRO1)
         while self.on:
             newTick = Tick()
             self.eventManager.post(newTick)
