@@ -7,7 +7,9 @@ from constants.const import *
 from decorations.border import Border
 from event import *
 from states import *
-
+import gameplay
+from characters_module.humans import *
+from characters_module.enemy import *
 
 class GraphicalView(object):
     """
@@ -60,6 +62,9 @@ class GraphicalView(object):
         self.initials = ''
         self.incorrect = False
         self.level = 1
+        self.lives = 3
+        self.score = 0
+        self.leveldata = {}
 
     def notify(self, event_in):
         """
@@ -83,8 +88,13 @@ class GraphicalView(object):
                 menu.home(self, event_in)
             if currentstate == LOGIN:
                 menu.login(self, event_in)
-            if currentstate == START_SCREEN:
-                menu.startscreen(self, event_in)
+            if currentstate == PLAYGAME:
+                self.evManager.post(ChangeState(LOAD_LEVEL1))
+            if currentstate>200:
+                gameplay.loadlevel(self, currentstate-200)
+            if 99<currentstate<200:
+                gameplay.level(self, event_in)
+
 
     def rendermenu(self):
         self.screen.fill((0, 0, 0))
