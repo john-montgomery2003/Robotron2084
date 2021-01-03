@@ -1,6 +1,6 @@
 import requests
 
-apiurl = 'http://ec2-54-170-66-205.eu-west-1.compute.amazonaws.com/'
+apiurl = 'http://54.170.66.205'
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
@@ -48,3 +48,29 @@ def signupuser(u,p1,p2,i):
             return False
     except:
         False
+
+def checkonline():
+    try:
+        requests.get('http://robo.johnmontgomery.tech')
+        return True
+    except requests.exceptions.ConnectionError:
+        return False
+
+def addscore(score):
+    with open('.token', 'r') as f:
+        token, id, _ = f.read().split('>')
+    result = session.post(apiurl+'/robo/addscore', params={
+        'userid': id,
+        'token': token,
+        'score': score}).json().get('message')
+    if result == 'success':
+        return True
+    else:
+        return False
+
+def isloggedin():
+    try:
+        open('.token')
+        return True
+    except:
+        return False

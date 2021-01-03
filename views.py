@@ -90,10 +90,13 @@ class GraphicalView(object):
                 menu.login(self, event_in)
             if currentstate == PLAYGAME:
                 self.evManager.post(ChangeState(LOAD_LEVEL1))
+            if currentstate == ENDGAME:
+                menu.endgame(self, event_in)
             if currentstate>200:
                 gameplay.loadlevel(self, currentstate-200)
             if 99<currentstate<200:
                 gameplay.level(self, event_in)
+
 
 
     def rendermenu(self):
@@ -116,3 +119,4 @@ class GraphicalView(object):
         self.largefont = pygame.font.Font('font/robotron-2084.ttf', 80)
         self.isinitialized = True
         self.player = Player()
+        self.lives = 3

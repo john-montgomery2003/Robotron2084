@@ -1,5 +1,5 @@
 from characters_module.characters import Character
-from constants.const import TPS
+from constants.const import *
 
 import pygame
 
@@ -21,3 +21,15 @@ class Player(Character):
             return self.l_images[count]
         elif self.direction[0] == 'E':
             return self.r_images[count]
+
+    def movy(self, newMov):
+        if (25+BORDER_W < self.position[1] + newMov < SCREENSIZE[1]-BORDER_W*2-30) :
+            self.position = (self.position[0], self.position[1] + newMov)
+
+
+        self.setdir(newMov, 0)
+
+    def movx(self, newMov):
+        if (BORDER_W-10 < self.position[0] + newMov < SCREENSIZE[0]-BORDER_W*2 -10):
+            self.position =  (self.position[0]+newMov,self.position[1])
+        self.setdir(newMov, 1)

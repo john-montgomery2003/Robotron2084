@@ -7,10 +7,12 @@ from states import *
 import csv
 from characters_module.enemy import *
 from characters_module.humans import *
+from characters_module.player import *
 
 def loadlevel(view, level):
 
     with open ('levels/levels.csv') as f:
+        print(level)
         csvreader = csv.reader(f, delimiter=',' )
         line = 0
         for row in csvreader:
@@ -19,7 +21,6 @@ def loadlevel(view, level):
             if line == level:
                 leveldata = row
             line += 1
-
 
     for header,count in zip(headers[1:], leveldata[1:]):
         view.leveldata[header] = count
@@ -105,17 +106,51 @@ def level(view, event):
         else:
             view.lastshot -= 1
 
-    view.spriteslist.update()
-    game_surface = pygame.Surface(SCREENSIZE, pygame.SRCALPHA, 32)
-    game_surface = game_surface.convert_alpha()
-    view.spriteslist.draw(game_surface)
 
     view.skincount += 1 if view.tickcounter % 2 == 0 else 0
     if view.skincount > 2:
         view.skincount = 0
+    playlist = [view.player.position]
+    for idx,item in enumerate(view.spriteslist):
+        item.update(view.skincount, playlist[idx%len(playlist)])
 
-    view.screen.blit(game_surface, (0, 0))
+    if view.tickcounter > 50:
+        for item in view.spriteslist:
+            if isinstance(item, Bullet):
+                for object in view.spriteslist:
+                    if -20<item.rect[0]-object.rect[0]<20 and -20<item.rect[1]-object.rect[1]<20  and not isinstance(object, Bullet):
+                        if isinstance(object, Grunt) or isinstance(object, Electrode) or isinstance(object, Hulk):
+                            object.kill()
+                        item.kill()
+            if isinstance(item, Electrode) or isinstance(item, Grunt) or isinstance(item, Hulk):
+                if -20<item.rect[0]-player.position[0]<20 and -20<item.rect[1]-player.position[1]<20:
+                    view.lives -= 1
+                    if view.lives > 0:
+                        view.evManager.post(ChangeState(view.model.statem.peek() + 101))
+                        return
+                    else:
+                        view.evManager.post(ChangeState(ENDGAME))
+            if isinstance(item, Electrode):
+                for object in view.spriteslist:
+                    if -10 < item.rect[0] - object.rect[0] < 10 and -10 < item.rect[1] - object.rect[1] < 10 and not isinstance(object, Electrode):
+                        if isinstance(object, Grunt):
+                            object.kill()
+            if isinstance(item, Mommies) or isinstance(item, Daddies) or isinstance(item, Mikeys):
+                if -20 < item.rect[0] - player.position[0] < 20 and -20 < item.rect[1] - player.position[1] < 20:
+                    score = item.die(view)
+                    view.score += score
+
+    gruntcount = sum(1 if isinstance(i, Grunt) else 0 for i in view.spriteslist)
+    if gruntcount == 0:
+        view.evManager.post(ChangeState(view.model.statem.peek() + 101))
+        return
+
+    view.spriteslist.draw(view.screen)
+
+
+
     if view.tickcounter > 30:
+        player.getskin(view.skincount)
         view.screen.blit(player.getskin(view.skincount), player.position)
 
 

@@ -14,7 +14,7 @@ class Border(pygame.sprite.Sprite):
         self.drawrect()
         self.rect.center = (SCREENSIZE[0]/2, SCREENSIZE[1]/2)
 
-    def update(self):
+    def update(self,_,__):
 
         r,g,b = self.color
         if r>0 and b == 0:
@@ -35,6 +35,9 @@ class Border(pygame.sprite.Sprite):
             pygame.draw.line(self.image, self.color, [0, SCREENSIZE[1]], [SCREENSIZE[0], SCREENSIZE[1]], BORDER_W*2),
             pygame.draw.line(self.image, self.color, [0, 30], [0, SCREENSIZE[1]], BORDER_W*2),
             pygame.draw.line(self.image, self.color, [SCREENSIZE[0], 30], [SCREENSIZE[0], SCREENSIZE[1]], BORDER_W*2)
-            ]
+]
 
         self.rect = self.image.get_rect()
+
+    def die(self):
+        return

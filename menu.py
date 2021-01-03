@@ -472,3 +472,111 @@ def login(view, event):
     pygame.display.flip()
 
     view.clock.tick(TPS)
+
+
+def endgame(view, event):
+    view.screen.fill(BLACK)
+    view.tickcounter += 1
+    if isinstance(event, Keyboard):
+        if event.key == 32:
+            view.evManager.post(ChangeState(HOMESCREEN))
+        if event.key == 111:
+            webbrowser.open('https://robo.johnmontgomery.tech', new=2)
+        if event.key == 13:
+            view.evManager.post(ChangeState(LOGIN))
+    else:
+        prog = list(range(40, 0, -1))
+        if view.tickcounter % 10 == 1:
+            view.col = random.choice(title_colors)
+            view.edgecol = random.choice(edge)
+        for idx, letter in enumerate('ROBOTRON:'):
+            image = render(letter, view.largefont, gfcolor=view.col, ocolor=view.edgecol)
+            w, h = image.get_width(), image.get_height()
+            image = pygame.transform.scale(image, (w, 0 if view.tickcounter < idx else h + int(
+                1.3 ** prog[view.tickcounter - idx if view.tickcounter - idx < 40 else 39])))
+            view.screen.blit(image, (88 + idx * 74, 90 - image.get_height() / 2))
+        if 220 >= view.tickcounter > 40:
+            view.tickcounter += 2
+            image = pygame.image.load('sprites/2084.png')
+            w, h = image.get_width(), image.get_height()
+            image = pygame.transform.scale(image, (w, 180 * h // (view.tickcounter - 40)))
+            view.screen.blit(image, (196, (100 + (180 * h // (view.tickcounter - 40))) / 2))
+        if 220 < view.tickcounter:
+            image = pygame.image.load('sprites/2084.png')
+            view.screen.blit(image, (196, 140))
+
+            if view.tickcounter % 5 == 0:
+                if view.color == (0, 0, 0):
+                    view.color = (22, 32, 221)
+                else:
+                    view.color = (0, 0, 0)
+
+            somewords = view.font.render(
+                'GAME OVER',
+                True,
+                view.color)
+            width, _ = pygame.font.Font.size(view.font, 'GAME OVER')
+            position_font = (SCREENSIZE[0] - width) / 2
+            view.screen.blit(somewords, (position_font + 6, 330))
+
+            somewords = view.font.render(
+                'You scored:',
+                True,
+                (246, 130, 20))
+            width, _ = pygame.font.Font.size(view.font, 'You scored:')
+            position_font = (SCREENSIZE[0] - width) / 2
+            view.screen.blit(somewords, (position_font + 6, 400))
+
+            somewords = view.font.render(
+                str(view.score),
+                True,
+                (246, 130, 20))
+            width, _ = pygame.font.Font.size(view.font, str(view.score))
+            position_font = (SCREENSIZE[0] - width) / 2
+            view.screen.blit(somewords, (position_font + 6, 450))
+
+            somewords = view.smallfont.render(
+                'SPACE for homescreen',
+                True,
+                (246, 130, 20))
+            width, _ = pygame.font.Font.size(view.smallfont, 'SPACE for homescreen')
+            position_font = (SCREENSIZE[0] - width) / 2
+            view.screen.blit(somewords, (position_font + 6, 500))
+
+            somewords = view.smallfont.render(
+                'O to open leaderboard',
+                True,
+                (246, 130, 20))
+            width, _ = pygame.font.Font.size(view.smallfont, 'O to open leaderboard')
+            position_font = (SCREENSIZE[0] - width) / 2
+            view.screen.blit(somewords, (position_font + 6, 525))
+
+            if checkonline():
+                if isloggedin():
+                    if addscore(view.score):
+                        somewords = view.smallfont.render(
+                            'Score added to leaderboard',
+                            True,
+                            (246, 130, 20))
+                        width, _ = pygame.font.Font.size(view.smallfont, 'Score added to leaderboard')
+                        position_font = (SCREENSIZE[0] - width) / 2
+                        view.screen.blit(somewords, (position_font + 6, 550))
+                else:
+                    somewords = view.smallfont.render(
+                        'Enter to log in',
+                        True,
+                        (246, 130, 20))
+                    width, _ = pygame.font.Font.size(view.smallfont, 'Enter to log in')
+                    position_font = (SCREENSIZE[0] - width) / 2
+                    view.screen.blit(somewords, (position_font + 6, 550))
+            else:
+                somewords = view.smallfont.render(
+                    'OFFLINE',
+                    True,
+                    RED)
+                width, _ = pygame.font.Font.size(view.smallfont, 'OFFLINE')
+                position_font = (SCREENSIZE[0] - width) / 2
+                view.screen.blit(somewords, (position_font + 6, 550))
+    pygame.display.flip()
+
+    view.clock.tick(TPS)
