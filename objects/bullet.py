@@ -54,7 +54,7 @@ class Bullet(pygame.sprite.Sprite):
 
 
 
-    def update(self):
+    def update(self, _, __):
         self.rect.center = self.rect.center[0] + self.movx, self.rect.center[1] + self.movy
         if (not (SCREENSIZE[1]-BORDER_W-30 >= self.rect.y >= 30 + BORDER_W) ) or\
                 (not (SCREENSIZE[0]-BORDER_W*4 -5 >= self.rect.x >= BORDER_W*2 - 5)):
