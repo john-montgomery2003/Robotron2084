@@ -8,9 +8,9 @@ import csv
 from characters_module.enemy import *
 from characters_module.humans import *
 from characters_module.player import *
-
+from playsound import playsound
 def loadlevel(view, level):
-
+    playsound('audio/change.mp3', block=False)
     with open ('levels/levels.csv') as f:
         print(level)
         csvreader = csv.reader(f, delimiter=',' )

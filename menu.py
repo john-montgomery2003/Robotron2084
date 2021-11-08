@@ -1,6 +1,6 @@
 import random
 import webbrowser
-
+from playsound import playsound
 import pygame
 
 from APIinteractions import *
@@ -60,9 +60,12 @@ def randomStart(view):
 
 def allopperational(view):
     view.tickcounter += 1
+    if view.tickcounter == 2:
+        playsound('audio/intro.mp3', block = False)
     if view.tickcounter > 40:
         view.evManager.post(ChangeState(HOMESCREEN))
     elif view.tickcounter > 5:
+
         view.screen.fill((10, 10, 10))
         todisplay1 = '''Initial tests indicate:'''
 
