@@ -1,6 +1,6 @@
 import requests
 
-apiurl = 'http://54.170.66.205'
+apiurl = 'http://127.0.0.1:5000'
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 

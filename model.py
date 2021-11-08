@@ -35,6 +35,7 @@ class Game:
             self.statem.push(STATE_TEST)
         elif mode == 'light':
             pass
+        # TODO impliment levels with less characters, slower, etc
         else:
             self.statem.push(STATE_INTRO1)
         while self.on:

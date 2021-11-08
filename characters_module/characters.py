@@ -4,6 +4,9 @@ from constants.const import *
 from characters_module.sprites import stretech_image
 
 class Character(sprite.Sprite):
+    """
+    This is a very basic character, from which all the other
+    """
     def __init__(self, sheetname, imagecount=12, scale=40):
         super().__init__()
         self.sheetname = sheetname
