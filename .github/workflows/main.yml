@@ -33,21 +33,12 @@ jobs:
         with:
           # The root LaTeX file to be compiled
           root_file: "Write Up.tex"
-      - name: Commit files
-        id: commit
+      - name: update file and push to remote
         run: |
-          git config --local user.email "johnmontgomery2003@gmail.com"
-          git config --local user.name "johnmontgomery2003(Automated LaTeX Push)"
-          git add --all
-          if [-z "$(git status --porcelain)"]; then
-             echo "::set-output name=push::false"
-          else
-             git commit -m "Add changes" -a
-             echo "::set-output name=push::true"
-          fi
-          shell: bash
-      - name: Push changes
-        if: steps.commit.outputs.push == 'true'
-        uses: ad-m/github-push-action@master
-        with:
-           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add "Write Up.pdf"
+          git commit -m "AUTO COMMIT - Add complied LaTeX report"
+          git push
