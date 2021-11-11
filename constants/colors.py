@@ -1,3 +1,8 @@
+"""
+This is just a selection of constants as colours
+"""
+
+
 BLACK = (0, 0, 0)
 GREY = (61, 61, 61)
 BROWN = (40, 28, 14)

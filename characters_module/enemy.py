@@ -7,7 +7,8 @@ import pygame
 class Enemy(Character):
     """
     This enemy is again, only used to extend from. It acts as a basic super class which can easily be used to generate
-    the other classes for the enemies. Because the enemies need to update in different ways, its not possible to
+    the other classes for the enemies. Because the enemies need to update in different ways, its not possible to have
+    them all exhibit the same behaviour here.
     """
     def __init__(self,sheetname, images=12):
         Character.__init__(self, sheetname, images)
@@ -16,11 +17,18 @@ class Enemy(Character):
 
 
 class Grunt(Enemy):
+    """
+    This is the basic enemy, which is only able to move, and on colliding with the player, it kills the player. If it
+    gets hit by a bullet, it dies
+    """
     def __init__(self):
         self.sheetname = 'sprites/grunt.png'
         Enemy.__init__(self, self.sheetname)
 
     def update(self, count, playerpos):
+        """
+        This is a pretty poorly executed AI. I think ill replace this with a boids algorithm.
+        """
         self.image = self.images[count]
         position = self.rect
         x = playerpos[0] - position[0] +random.randint(-100,100)
@@ -32,6 +40,9 @@ class Grunt(Enemy):
         self.rect = (self.rect[0]+newx, self.rect[1]+newy)
 
 class Electrode(Enemy):
+    """
+    These are the static enemies
+    """
     def __init__(self):
         self.sheetname = 'sprites/electrode.png'
         Enemy.__init__(self, self.sheetname,3)
@@ -42,6 +53,9 @@ class Electrode(Enemy):
 
 
 class Hulk(Enemy):
+    """
+    These are like the grunts, but cant be killed. They only slow down when hit.
+    """
     def __init__(self):
         self.sheetname = 'sprites/hulk.png'
         Enemy.__init__(self, self.sheetname)

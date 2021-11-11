@@ -1,3 +1,7 @@
+"""
+These constants control game play. Most of these constants are adjustable and will adapt automatically for the game.
+"""
+
 from math import sqrt
 
 VELOCITY = 6

@@ -4,7 +4,9 @@ from random import choice
 from constants.const import PROJ_VELOCITY, DPROJ_VELOCITY, SCREENSIZE, BORDER_W
 from playsound import playsound
 class Bullet(pygame.sprite.Sprite):
-
+    """
+    A classs for the bullets
+    """
     def __init__(self, x, y, dir):
         playsound('audio/shoot.mp3', block=False)
         pygame.sprite.Sprite.__init__(self)
