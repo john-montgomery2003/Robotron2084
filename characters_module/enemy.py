@@ -5,6 +5,10 @@ import random
 import math
 import pygame
 class Enemy(Character):
+    """
+    This enemy is again, only used to extend from. It acts as a basic super class which can easily be used to generate
+    the other classes for the enemies. Because the enemies need to update in different ways, its not possible to
+    """
     def __init__(self,sheetname, images=12):
         Character.__init__(self, sheetname, images)
         self.rect = (random.randint(50,SCREENSIZE[0]-50),random.randint(70,SCREENSIZE[1]-50) )
