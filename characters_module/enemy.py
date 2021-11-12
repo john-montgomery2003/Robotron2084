@@ -62,6 +62,9 @@ class Hulk(Enemy):
         self.living = 0
 
     def getskin(self, count):
+        """
+        This is overriding the base function. Hulks always face the same way
+        """
         if self.velocity[0] < 0:
             return self.images[:3][count]
         elif self.velocity[0] > 0:

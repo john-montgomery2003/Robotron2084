@@ -9,6 +9,8 @@ from characters_module.enemy import *
 from characters_module.humans import *
 from characters_module.player import *
 from playsound import playsound
+from multiprocessing import Pool
+from math import arctan, sqrt
 def loadlevel(view, level):
     playsound('audio/change.mp3', block=False)
     with open ('levels/levels.csv') as f:
@@ -115,6 +117,42 @@ def level(view, event):
         item.update(view.skincount, playlist[idx%len(playlist)])
 
     if view.tickcounter > 50:
+        class Vector:
+            def __init__(self,i,j):
+                self.i = i
+                self.j = j
+                self.angle = arctan(i/j)
+                self.mag = sqrt(i**2 + j**2)
+
+        def multiply(v1: Vector, v2: Vector):
+            return Vector(v1.i*v2.i, v1.j*v2.j)
+
+        def crossProduct(v1: Vector, v2: Vector):
+            return v1.i * v2.j - v2.i * v1.j
+        def calculateInView(x: grunt, gruntlist):
+            inView = []
+            gruntlist = gruntlist.remove(x)
+            x1,y1 = x.rect[:1]
+            viewVect = {
+                'N': [Vector(-1,1), Vector(1,1)],
+                'E': [Vector(1,1), Vector(-1,1)],
+                'S': [Vector(1,-1), Vector(-1,-1)]
+                'W': [Vector(-1,-1), Vector(-1,1)]
+            }
+            p,q = viewVect[x.direction]
+            for grunt in gruntlist:
+                x2,y2 = grunt.rect[:1]
+                a,b,c = p,q, Vector(x2-x1, y2-y1)
+                if (crossProduct(b, c)) * (crossProduct(a, c)) >= 0:
+                    # TODO add code here for when grunt is between the sight vecors, eg callculate needed values for boids
+            return x, inView
+
+        gruntslist = filter(view.spriteslist, key=lambda x:isinstance(x, Grunt))
+
+        f = lambda x:calculateInView(x, gruntslist)
+        with Pool() as p:
+            positionsInView = p.map(f, gruntslist)
+
         for item in view.spriteslist:
             if isinstance(item, Bullet):
                 for object in view.spriteslist:
