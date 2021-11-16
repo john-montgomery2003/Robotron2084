@@ -8,7 +8,7 @@ class Character(sprite.Sprite):
     This is a very basic character, from which all the other characters will extend, this is never used directly,
     and there will need to be lots of extra functions. This code mostly is needed for the animation and directions
     """
-    def __init__(self, sheetname, imagecount=12, scale=40):
+    def __init__(self, sheetname, imagecount=12, scale=30):
         """
         This creates the character, mostly handles grabing the spritesheet, clipping the sprites and scaling them.
         """

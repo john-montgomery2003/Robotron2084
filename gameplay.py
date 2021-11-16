@@ -9,8 +9,8 @@ from characters_module.enemy import *
 from characters_module.humans import *
 from characters_module.player import *
 from playsound import playsound
-from multiprocessing import Pool
-from math import arctan, sqrt
+import multiprocessing
+from math import atan, sqrt
 def loadlevel(view, level):
     playsound('audio/change.mp3', block=False)
     with open ('levels/levels.csv') as f:
@@ -114,44 +114,56 @@ def level(view, event):
         view.skincount = 0
     playlist = [view.player.position]
     for idx,item in enumerate(view.spriteslist):
-        item.update(view.skincount, playlist[idx%len(playlist)])
+        if not isinstance(item, Grunt):
+            item.update(view.skincount, playlist[idx%len(playlist)])
 
     if view.tickcounter > 50:
-        class Vector:
-            def __init__(self,i,j):
-                self.i = i
-                self.j = j
-                self.angle = arctan(i/j)
-                self.mag = sqrt(i**2 + j**2)
 
-        def multiply(v1: Vector, v2: Vector):
-            return Vector(v1.i*v2.i, v1.j*v2.j)
+        def calculateInView(x, gruntlist, playerpos):
 
-        def crossProduct(v1: Vector, v2: Vector):
-            return v1.i * v2.j - v2.i * v1.j
-        def calculateInView(x: grunt, gruntlist):
-            inView = []
-            gruntlist = gruntlist.remove(x)
-            x1,y1 = x.rect[:1]
-            viewVect = {
-                'N': [Vector(-1,1), Vector(1,1)],
-                'E': [Vector(1,1), Vector(-1,1)],
-                'S': [Vector(1,-1), Vector(-1,-1)]
-                'W': [Vector(-1,-1), Vector(-1,1)]
-            }
-            p,q = viewVect[x.direction]
+            gruntlist = list(gruntlist)
+
+            xtot, ytot = 0,0
+            c1,c2 = 0,0
+            v1,v2 = 0,0
+
+            x1,y1 = x.rect[0], x.rect[1]
+            count = len(gruntlist)
+
             for grunt in gruntlist:
-                x2,y2 = grunt.rect[:1]
-                a,b,c = p,q, Vector(x2-x1, y2-y1)
-                if (crossProduct(b, c)) * (crossProduct(a, c)) >= 0:
-                    # TODO add code here for when grunt is between the sight vecors, eg callculate needed values for boids
-            return x, inView
+                x2,y2 = grunt.rect[0], grunt.rect[1]
 
-        gruntslist = filter(view.spriteslist, key=lambda x:isinstance(x, Grunt))
 
-        f = lambda x:calculateInView(x, gruntslist)
-        with Pool() as p:
-            positionsInView = p.map(f, gruntslist)
+                xtot += x2
+                ytot += y2
+
+                if sqrt((x2-x1)**2 + (y2-y1)**2) < 60:
+                    c1 = c1 - (x2 - x1)
+                    c2 = c2 - (y2 - y1)
+                    c1 += (playerpos[0] - x1) / 2
+                    c2 += (playerpos[1] - y1) / 2
+
+                v1 += grunt.vx
+                v2 += grunt.vy
+
+                p1 = (playerpos[0]-x1) /5
+                p2 = (playerpos[1]-y1) /5
+
+            xavg, yavg = xtot/count, ytot/count
+            vxavg, vyavg = v1/count, v2/count
+
+            return (xavg/100)+c1+(vxavg/20)+p1, (yavg/100)+c2+(vyavg/20)+p2
+
+        gruntslist = list(filter(lambda x:isinstance(x, Grunt) , view.spriteslist))
+        f = lambda x:calculateInView(x, gruntslist, player.position)
+
+        newPos = map(f, gruntslist)
+
+        newPos = list(newPos)
+        for i in range(len(newPos)):
+            item, mov = gruntslist[i],newPos[i]
+
+            item.update(view.skincount, mov[0],mov[1])
 
         for item in view.spriteslist:
             if isinstance(item, Bullet):
@@ -162,12 +174,13 @@ def level(view, event):
                         item.kill()
             if isinstance(item, Electrode) or isinstance(item, Grunt) or isinstance(item, Hulk):
                 if -20<item.rect[0]-player.position[0]<20 and -20<item.rect[1]-player.position[1]<20:
-                    view.lives -= 1
+                    pass
+                    """view.lives -= 1
                     if view.lives > 0:
                         view.evManager.post(ChangeState(view.model.statem.peek() + 101))
                         return
                     else:
-                        view.evManager.post(ChangeState(ENDGAME))
+                        view.evManager.post(ChangeState(ENDGAME))"""
             if isinstance(item, Electrode):
                 for object in view.spriteslist:
                     if -10 < item.rect[0] - object.rect[0] < 10 and -10 < item.rect[1] - object.rect[1] < 10 and not isinstance(object, Electrode):

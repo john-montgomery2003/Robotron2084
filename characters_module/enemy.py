@@ -24,20 +24,27 @@ class Grunt(Enemy):
     def __init__(self):
         self.sheetname = 'sprites/grunt.png'
         Enemy.__init__(self, self.sheetname)
+        self.vx = random.randint(-20,20)
 
-    def update(self, count, playerpos):
+        self.vy = random.randint(-20, 20)
+    def update(self, count, movx,movy):
         """
         This is a pretty poorly executed AI. I think ill replace this with a boids algorithm.
         """
+
         self.image = self.images[count]
         position = self.rect
-        x = playerpos[0] - position[0] +random.randint(-100,100)
-        y = playerpos[1] - position[1] + random.randint(-100, 100)
+        x = movx
+        y = movy
         legnth = sqrt(x**2 + y**2)
         adj = legnth / 3
         newy = y / adj
         newx = x / adj
-        self.rect = (self.rect[0]+newx, self.rect[1]+newy)
+
+        newx = max(50,min(self.rect[0]+newx, SCREENSIZE[0]-50))
+        newy = max(50, min(self.rect[1]+newy, SCREENSIZE[1]-50))
+
+        self.rect = (newx, newy)
 
 class Electrode(Enemy):
     """
