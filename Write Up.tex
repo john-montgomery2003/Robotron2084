@@ -1,5 +1,5 @@
 \documentclass[a4paper, 11pt]{report}
-
+\usepackage[a4paper,margin=1in]{geometry}
 
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -286,8 +286,17 @@ PyCharm                              & Dev                                      
 \end{table}
 
 \section{Listings}
+\lstlistoflistings
+\subsection{Website Code}
 
+app.py
+\lstinputlisting[language=Python]{"Website Code/app.py"}
 
+index.html
+\lstinputlisting[language=HTML]{"Website Code/templates/index.html"}
+
+error.html
+\lstinputlisting[language=HTML]{"Website Code/templates/error.html"}
 
 \end{document}
 
