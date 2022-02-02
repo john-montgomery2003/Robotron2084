@@ -4,6 +4,10 @@ from constants.colors import *
 
 
 class Border(pygame.sprite.Sprite):
+    """
+    This border class is drawn around the edge of the screen. it is a sprite itself, so it cannot be killed
+    """
+
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.color = (255,0,0)

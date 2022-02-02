@@ -1,9 +1,13 @@
 from characters_module.characters import Character
 from constants.const import *
 
-import pygame
 
 class Player(Character):
+    """
+    Because most of the logic about whether a player is alive and the score is handled by the Model, most of it
+    can be abstracted away. This class mostly handles the player screen logic, and doesnt look ay the logic of whether
+    or not the player is alive.
+    """
     def __init__(self):
         self.sheetname = 'sprites/player.png'
         Character.__init__(self, self.sheetname)
@@ -25,8 +29,6 @@ class Player(Character):
     def movy(self, newMov):
         if (25+BORDER_W < self.position[1] + newMov < SCREENSIZE[1]-BORDER_W*2-30) :
             self.position = (self.position[0], self.position[1] + newMov)
-
-
         self.setdir(newMov, 0)
 
     def movx(self, newMov):

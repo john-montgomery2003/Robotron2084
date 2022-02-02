@@ -2,9 +2,13 @@
 from characters_module.characters import Character
 from constants.const import *
 import random
-import math
 import pygame
 class Enemy(Character):
+    """
+    This enemy is again, only used to extend from. It acts as a basic super class which can easily be used to generate
+    the other classes for the enemies. Because the enemies need to update in different ways, its not possible to have
+    them all exhibit the same behaviour here.
+    """
     def __init__(self,sheetname, images=12):
         Character.__init__(self, sheetname, images)
         self.rect = (random.randint(50,SCREENSIZE[0]-50),random.randint(70,SCREENSIZE[1]-50) )
@@ -12,22 +16,39 @@ class Enemy(Character):
 
 
 class Grunt(Enemy):
+    """
+    This is the basic enemy, which is only able to move, and on colliding with the player, it kills the player. If it
+    gets hit by a bullet, it dies
+    """
     def __init__(self):
         self.sheetname = 'sprites/grunt.png'
         Enemy.__init__(self, self.sheetname)
+        self.vx = random.randint(-20,20)
 
-    def update(self, count, playerpos):
+        self.vy = random.randint(-20, 20)
+    def update(self, count, movx,movy):
+        """
+        This is a pretty poorly executed AI. I think ill replace this with a boids algorithm.
+        """
+
         self.image = self.images[count]
         position = self.rect
-        x = playerpos[0] - position[0] +random.randint(-100,100)
-        y = playerpos[1] - position[1] + random.randint(-100, 100)
+        x = movx
+        y = movy
         legnth = sqrt(x**2 + y**2)
         adj = legnth / 3
         newy = y / adj
         newx = x / adj
-        self.rect = (self.rect[0]+newx, self.rect[1]+newy)
+
+        newx = max(50,min(self.rect[0]+newx, SCREENSIZE[0]-50))
+        newy = max(50, min(self.rect[1]+newy, SCREENSIZE[1]-50))
+
+        self.rect = (newx, newy)
 
 class Electrode(Enemy):
+    """
+    These are the static enemies
+    """
     def __init__(self):
         self.sheetname = 'sprites/electrode.png'
         Enemy.__init__(self, self.sheetname,3)
@@ -38,12 +59,18 @@ class Electrode(Enemy):
 
 
 class Hulk(Enemy):
+    """
+    These are like the grunts, but cant be killed. They only slow down when hit.
+    """
     def __init__(self):
         self.sheetname = 'sprites/hulk.png'
         Enemy.__init__(self, self.sheetname)
         self.living = 0
 
     def getskin(self, count):
+        """
+        This is overriding the base function. Hulks always face the same way
+        """
         if self.velocity[0] < 0:
             return self.images[:3][count]
         elif self.velocity[0] > 0:

@@ -51,7 +51,7 @@ def signupuser(u,p1,p2,i):
 
 def checkonline():
     try:
-        requests.get('http://robo.johnmontgomery.tech')
+        requests.get(apiurl)
         return True
     except requests.exceptions.ConnectionError:
         return False
@@ -63,10 +63,7 @@ def addscore(score):
         'userid': id,
         'token': token,
         'score': score}).json().get('message')
-    if result == 'success':
-        return True
-    else:
-        return False
+    return True
 
 def isloggedin():
     try:

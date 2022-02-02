@@ -9,6 +9,7 @@ from characters_module.enemy import *
 from characters_module.humans import *
 from characters_module.player import *
 from playsound import playsound
+from math import sqrt
 def loadlevel(view, level):
     playsound('audio/change.mp3', block=False)
     with open ('levels/levels.csv') as f:
@@ -112,9 +113,57 @@ def level(view, event):
         view.skincount = 0
     playlist = [view.player.position]
     for idx,item in enumerate(view.spriteslist):
-        item.update(view.skincount, playlist[idx%len(playlist)])
+        if not isinstance(item, Grunt):
+            item.update(view.skincount, playlist[idx%len(playlist)])
 
     if view.tickcounter > 50:
+
+        def calculateInView(x, gruntlist, playerpos):
+
+            gruntlist = list(gruntlist)
+
+            xtot, ytot = 0,0
+            c1,c2 = 0,0
+            v1,v2 = 0,0
+
+            x1,y1 = x.rect[0], x.rect[1]
+            count = len(gruntlist)
+
+            for grunt in gruntlist:
+                x2,y2 = grunt.rect[0], grunt.rect[1]
+
+
+                xtot += x2
+                ytot += y2
+
+                if sqrt((x2-x1)**2 + (y2-y1)**2) < 60:
+                    c1 = c1 - (x2 - x1)
+                    c2 = c2 - (y2 - y1)
+                    c1 += (playerpos[0] - x1) / 2
+                    c2 += (playerpos[1] - y1) / 2
+
+                v1 += grunt.vx
+                v2 += grunt.vy
+
+                p1 = (playerpos[0]-x1) /5
+                p2 = (playerpos[1]-y1) /5
+
+            xavg, yavg = xtot/count, ytot/count
+            vxavg, vyavg = v1/count, v2/count
+
+            return (xavg/100)+c1+(vxavg/20)+p1, (yavg/100)+c2+(vyavg/20)+p2
+
+        gruntslist = list(filter(lambda x:isinstance(x, Grunt) , view.spriteslist))
+        f = lambda x:calculateInView(x, gruntslist, player.position)
+
+        newPos = map(f, gruntslist)
+
+        newPos = list(newPos)
+        for i in range(len(newPos)):
+            item, mov = gruntslist[i],newPos[i]
+
+            item.update(view.skincount, mov[0],mov[1])
+
         for item in view.spriteslist:
             if isinstance(item, Bullet):
                 for object in view.spriteslist:

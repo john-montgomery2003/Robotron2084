@@ -3,6 +3,10 @@ import random
 from constants.const import *
 import time
 class Human(Character):
+    """
+    The base Human class.  Because the behaviour is so similar here (they all have the same movement and actions) so
+    they can all extend from a very very basic class.
+    """
     def __init__(self,sheetname, images=12):
         Character.__init__(self, sheetname, images, 60)
         self.rect = self.image.get_rect()
@@ -75,10 +79,13 @@ class Daddies(Human):
 
 
 class Mikeys(Human):
+    """
+    These are the 'kids' - i made them move slower
+    """
     def __init__(self):
         self.sheetname = 'sprites/mikeys.png'
         self.living = 0
-        self.velocity = (random.randint(-4, 4), random.randint(-4, 4))
+        self.velocity = (random.randint(-3, 3), random.randint(-3, 3))
         self.value = '1000'
         Character.__init__(self, self.sheetname)
 
