@@ -9,8 +9,7 @@ from characters_module.enemy import *
 from characters_module.humans import *
 from characters_module.player import *
 from playsound import playsound
-import multiprocessing
-from math import atan, sqrt
+from math import sqrt
 def loadlevel(view, level):
     playsound('audio/change.mp3', block=False)
     with open ('levels/levels.csv') as f:
@@ -174,13 +173,12 @@ def level(view, event):
                         item.kill()
             if isinstance(item, Electrode) or isinstance(item, Grunt) or isinstance(item, Hulk):
                 if -20<item.rect[0]-player.position[0]<20 and -20<item.rect[1]-player.position[1]<20:
-                    pass
-                    """view.lives -= 1
+                    view.lives -= 1
                     if view.lives > 0:
                         view.evManager.post(ChangeState(view.model.statem.peek() + 101))
                         return
                     else:
-                        view.evManager.post(ChangeState(ENDGAME))"""
+                        view.evManager.post(ChangeState(ENDGAME))
             if isinstance(item, Electrode):
                 for object in view.spriteslist:
                     if -10 < item.rect[0] - object.rect[0] < 10 and -10 < item.rect[1] - object.rect[1] < 10 and not isinstance(object, Electrode):

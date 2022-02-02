@@ -1,7 +1,6 @@
 import sys
+import controller, eventmanager
 
-import controller
-import eventmanager
 import model
 import views
 
@@ -14,9 +13,11 @@ def run(mode):
 
     gamemodel.run(mode)
 
-if __name__ == '__main__':
+
+
+if __name__ == "__main__":
     try:
-        if sys.argv[1].lower() == 'test':
-            run('test')
+        if sys.argv[1].lower() == "test":
+            run("test")
     except IndexError:
         run(None)

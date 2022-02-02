@@ -1,7 +1,6 @@
 from characters_module.characters import Character
 from constants.const import *
 
-import pygame
 
 class Player(Character):
     """

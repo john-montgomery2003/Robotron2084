@@ -2,7 +2,6 @@
 from characters_module.characters import Character
 from constants.const import *
 import random
-import math
 import pygame
 class Enemy(Character):
     """
