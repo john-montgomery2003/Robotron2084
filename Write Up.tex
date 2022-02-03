@@ -1,6 +1,6 @@
 \documentclass[a4paper, 11pt]{report}
 \usepackage[a4paper,margin=1in]{geometry}
-
+\usepackage{dirtree}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{hyperref}
@@ -14,6 +14,16 @@
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\newenvironment{simplechar}{%
+   \catcode`\$=12
+   \catcode`\&=12
+   \catcode`\#=12
+   \catcode`\^=12
+   \catcode`\_=12
+   \catcode`\~=12
+   \catcode`\%=12
+}{}
 
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{backcolour},   
@@ -216,6 +226,17 @@ The other key class is the state machine. Each state is not given its own class,
 
 In order to run through a basic idea of what happens when the program is run, I have created a step by step flowchart. This flowchart [Fig 9] is a gross oversimplification, but works as a high level description of what it is my code is doing when executed.
 
+\section{Boids}
+I have decided to implement a boids flocking algorithm into the game, this is a mathematical approach to natural flocking behaviour, and whilst this is not the 'AI' used by the robots in the original game (this was closed source, or at least, i have not found it), it does work quite well. Essentially there are 3 rules:
+
+    - move towards the centre of mass of the flock
+    - match velocities with the flock
+    - avoid collisions
+    
+in order to make them flock towards the player a 4th rule is added such that, in every iteration, the flock moves slightly closer to the player. This boids algorithm is much better than my original method, which essentially only implemented rule 4, and would get too close to the player and stack.
+
+
+
 \section{Database}
 This section will show the database design and set up, and explain some of the SQL used in the program. Fig 10 shows the database diagram.
 
@@ -260,12 +281,34 @@ To help further security, HTTPS is being used for all the sending and receiving 
 
 
 \chapter{Technical Solution}
-Im working on a way to easily do this. I am using LaTeX as this will allow me to not have to change the code on my report manually, as it will link to the files. However i am still learning. This file will also update on my github, so if you go to https://github.com/john-montgomery2003/Robotron2084 you will be able to find a pdf of this document which is more up to date.
+Check listings (in the appendix) for a view of all the code. This code is commented to a high standard, but particularly vital sections will be outlined below.
 
-\section{Example}
+\section{Boids}
+Boids was talked about in design, here is the implementation:
+
+First step is creating the function and and setting variables
+\lstinputlisting[language=Python, firstline=121, lastline=131]{"Game Code/gameplay.py"}
+
+Now we start looping through each grunt (each member of the flock), and checking if it is 'in view' of the current (x) grunt, to do this, calculate the distance between the points and check less than 60 (eg, a grunt has a sight radius of 60) 
+\lstinputlisting[language=Python, firstline=132, lastline=138]{"Game Code/gameplay.py"}
+
+If the boid is in sight then we update our values
+\lstinputlisting[language=Python, firstline=139, lastline=144]{"Game Code/gameplay.py"}
+
+then update these values to reflect the centre of the flock etc
+\lstinputlisting[language=Python, firstline=145, lastline=150]{"Game Code/gameplay.py"}
+
+these last lines calculate and return the final v of the boid (given as $\Delta x, \Delta y$), which can be added to the current position for the new position.
+\lstinputlisting[language=Python, firstline=150, lastline=155]{"Game Code/gameplay.py"}
+
+Now we use some functional type programming to efficiently find and update all the positions
+\lstinputlisting[language=Python, firstline=155, lastline=165]{"Game Code/gameplay.py"}
+
+
 
 \chapter{Testing - TODO}
 \chapter{Evaluation - TODO}
+
 \chapter{Appendix \& Bibliography}
 \section{Appendix}
 \begin{table}[h!]
@@ -284,8 +327,16 @@ Hetzner                              & Server                                   
 PyCharm                              & Dev                                                 & My IDE choice                                   \\ \hline
 \end{tabular}
 \end{table}
+\section{Files and Listings}
+This section will outline the file structure of the project, see the file structure diagram of both the game and website code below
 
-\section{Listings}
+\large{Game Code}
+TODO INSERT DIR TREE
+
+
+\large{Website Code}
+TODO INSERT DIR TREE
+
 \lstlistoflistings
 \subsection{Website Code}
 
@@ -304,6 +355,69 @@ styles.css
 
 \subsection{Game Code}
 
+main.py
+\lstinputlisting[language=Python]{"Game Code/main.py"}
+
+eventmanager.py
+\lstinputlisting[language=Python]{"Game Code/eventmanager.py"}
+
+statemachine.py
+\lstinputlisting[language=Python]{"Game Code/statemachine.py"}
+
+model.py
+\lstinputlisting[language=Python]{"Game Code/model.py"}
+
+views.py
+\lstinputlisting[language=Python]{"Game Code/views.py"}
+
+controller.py
+\lstinputlisting[language=Python]{"Game Code/controller.py"}
+
+event.py
+\lstinputlisting[language=Python]{"Game Code/event.py"}
+
+states.py
+\lstinputlisting[language=Python]{"Game Code/states.py"}
+
+menu.py
+\lstinputlisting[language=Python]{"Game Code/menu.py"}
+
+gameplay.py
+\lstinputlisting[language=Python]{"Game Code/gameplay.py"}
+
+APIinteractions.py
+\lstinputlisting[language=Python]{"Game Code/APIinteractions.py"}
+
+\subsubsection{characters\_module}
+characters.py
+\lstinputlisting[language=Python]{"Game Code/characters_module/characters.py"}
+enemy.py
+\lstinputlisting[language=Python]{"Game Code/characters_module/enemy.py"}
+
+humans.py
+\lstinputlisting[language=Python]{"Game Code/characters_module/humans.py"}
+
+player.py
+\lstinputlisting[language=Python]{"Game Code/characters_module/player.py"}
+
+sprites.py
+\lstinputlisting[language=Python]{"Game Code/characters_module/sprites.py"}
+
+\subsubsection{constants}
+
+colors.py
+\lstinputlisting[language=Python]{"Game Code/constants/colors.py"}
+
+const.py
+\lstinputlisting[language=Python]{"Game Code/constants/const.py"}
+
+\subsubsection{decorations}
+border.py
+\lstinputlisting[language=Python]{"Game Code/decorations/border.py"}
+
+\subsubsection{objects}
+bullet.py
+\lstinputlisting[language=Python]{"Game Code/objects/bullet.py"}
 
 \end{document}
 
