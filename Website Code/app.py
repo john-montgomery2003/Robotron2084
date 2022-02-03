@@ -1,4 +1,4 @@
-from waitress import serve
+
 # Flask is used to handle the web requests
 from flask import Flask, jsonify, request, render_template
 
@@ -9,7 +9,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 # Allow CORS - so it will work from both the webserver and python
 from flask_cors import CORS
-
+from waitress import serve
 # This is used to hash passwords and validate them - could of used a different tool, or built it myself, but
 # But this is prebuilt and purpose designed
 import bcrypt
@@ -66,9 +66,7 @@ def index():
     # ...so we convert it into a dictionary
     a, d = [], {}
     for lead in leaders:
-        for column, value in lead.items():
-            d = {**d, **{column: value}}
-        a.append(d)
+        a.append({"initials":lead[0],"scores":lead[1] })
     return render_template('index.html', a=a)
 
 
@@ -223,4 +221,4 @@ def adduser():
 
 
 if __name__ == '__main__':
-    serve(app, host="0.0.0.0", port=80)
+    app.run()
