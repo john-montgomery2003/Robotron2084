@@ -118,7 +118,7 @@ def level(view, event):
 
     if view.tickcounter > 50:
 
-        def calculateInView(x, gruntlist, playerpos):
+        def boids(x, gruntlist, playerpos):
 
             gruntlist = list(gruntlist)
 
@@ -154,7 +154,7 @@ def level(view, event):
             return (xavg/100)+c1+(vxavg/20)+p1, (yavg/100)+c2+(vyavg/20)+p2
 
         gruntslist = list(filter(lambda x:isinstance(x, Grunt) , view.spriteslist))
-        f = lambda x:calculateInView(x, gruntslist, player.position)
+        f = lambda x:boids(x, gruntslist, player.position)
 
         newPos = map(f, gruntslist)
 
