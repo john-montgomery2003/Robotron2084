@@ -1,3 +1,5 @@
+import random
+
 import pygame
 from constants.colors import *
 from event import *
@@ -196,6 +198,18 @@ def level(view, event):
 
     view.spriteslist.draw(view.screen)
 
+
+    somewords = view.minifont.render(
+        f"SCORE - {view.score}",
+        True,
+        random.choice(random_colors))
+    view.screen.blit(somewords, (5,5))
+
+    somewords = view.minifont.render(
+        f"LIVES - {'o'*view.lives}",
+        True,
+        random.choice(random_colors))
+    view.screen.blit(somewords, (SCREENSIZE[0]-170, 5))
 
 
     if view.tickcounter > 30:
