@@ -1,6 +1,7 @@
 \documentclass[a4paper, 11pt]{report}
 \usepackage[a4paper,margin=1in]{geometry}
 \usepackage{dirtree}
+ \usepackage[at]{easylist}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{hyperref}
@@ -9,12 +10,13 @@
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{cite}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
+\setlength{\headheight}{13.6pt}
 \newenvironment{simplechar}{%
    \catcode`\$=12
    \catcode`\&=12
@@ -50,7 +52,7 @@
 \fancypagestyle{plain}{
   \fancyhf{}% Clear header/footer
   \rhead{John Montgomery - 5199}
-\lhead{Kimberley College Sixth Form - 15125}
+\lhead{Kimberley College - 15162}
 \lfoot{\thepage}
 \rfoot{Robotron 2084: Pygame remake}
 }
@@ -66,8 +68,8 @@
   \large Written in PyGame with MVC architecture}
 \author{{\Large John Montgomery}\\ \ 
 Candidate Number: 5199\\
-Centre Name: Kimberley College Sixth Form\\
-Centre Number: 15125\\
+Centre Name: Kimberley College\\
+Centre Number: 15162\\
 Qualification: AQA 7517 (A--Level Computer Science)\\ \\
 {\small Supervisor: B. Harris}}
 \date{2020-2022}
@@ -88,10 +90,13 @@ Qualification: AQA 7517 (A--Level Computer Science)\\ \\
     \input{Abstract.tex}
 
 \chapter{Analysis}
+    \input{Analysis.tex}
+
+
 \section{What is MVC?}
 Model-View-Controller plays a large part in the project, the diagram [Figure \ref{fig:MVC_overview}] shows the main way that MVC works. It isolates the components of the game into 3 main components. The View, which is the screen, or what the user will see. The controller, which is where the user interacts with the game, in this case it is the interaction with the keyboard. The model, which is the part the user never interacts with, and stores the state of the game and current information about it.
 
-\begin{figure}[h]
+\begin{figure}[ht!]
   \includegraphics[width=\linewidth]{MVC overview.png}
   \caption{A diagram showing the MVC architecture}
   \label{fig:MVC_overview}
@@ -113,32 +118,46 @@ The dual stick shooter nature means the player uses one joystick to move, and on
 Robotron is a fast fast game, I had to slow it down slightly in order to make it more playable on my laptop, and so it does feel somewhat different to the original. However by slowing it as I have I have made it a much smoother game to play.
 
 \section{Objectives}
+\begin{easylist}[articletoc]
+@ Game Objectives
+@@ Main (hero) character objectives
+@@@ Character can be displayed
+@@@ Character can move in all 8 directions
+@@@ Character faces in correct direction
+@@@ Characters movement is animated
+@@@ Character is bounded to window
+@@@ Character can shoot in 8 directions
+@@@ Player is invincible on load of level
+@@ Enemy character objectives
+@@@ Enemies can be displayed
+@@@ Enemies can move
+@@@ Enemy faces correct direction
+@@@ Enemies movement is animated
+@@@ Enemy can move
+@@@ Enemy kills player when touching
+@@@ Specific enemy functionality
+@@@@ Electrodes are randomly spread around the page
+@@@@ Use boids flocking algorithm to dictate movement of grunts
+@@@@ Hunks slow down when shot
+@@ Menu objectives
+@@@ Logo is shown and animated
+@@@ Display static text
+@@@ Display animated text
+@@@ Display and allow input for options
+@@@ Allow for login and signup
+@@@ Show help menu
+@@ Decorations objectives
+@@@ Flashing border
+@@@ Random colour load screen
+@@@ "All tests" screen
+@@@ Inter---level animation
+
+@ Website Objectives
+@
+\end{easylist}
+
 \begin{enumerate}
-    \item Create basic playing ability
-        \begin{enumerate}
-            \item Player can move in 8 directions
-            \item Player can shoot in 8 directions
-            \item Players animation is correct for direction of travel
-        \end{enumerate}
-    \item Create basic enemies
-        \begin{enumerate}
-            \item Enemy is spawned in random position
-            \item Enemy can move
-            \item Enemy is animated
-            \item Enemy kills players
-        \end{enumerate}
-    \item Create Loading Screens
-        \begin{enumerate}
-            \item Fuzzy loading screen
-            \item 'All test' screen
-            \item Home Screen
-        \end{enumerate}
-    \item Create levels and transitions
-        \begin{enumerate}
-            \item Player moves between levels
-            \item Level transitions
-            \item Player is invincible on load
-        \end{enumerate}
+
     \item Create the API
     \item Create login system
         \begin{enumerate}
@@ -158,14 +177,14 @@ Robotron is a fast fast game, I had to slow it down slightly in order to make it
 
 \section{Design and Inspiration}
 The design for all the game is heavily taken from the original game. I used many places to research this, but below is a selection of screenshots and videos which were used in the creation of the game.
-\begin{figure}[h!]
+\begin{figure}[ht!]
   \includegraphics[width=0.8\linewidth]{design1.png}
   \centering
   \caption{Screen from original game - \url{https://arcadeblogger.com/2020/06/27/the-development-of-robotron/}}
   \label{fig:Design 1}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
   \includegraphics[width=0.8\linewidth]{design2.png}
   \centering
   \caption{Advertising Material - \url{https://arcadeblogger.com/2020/06/27/the-development-of-robotron/}}
@@ -186,7 +205,7 @@ The main design aspect is the MVC architecture and how it forms the basis of the
 \section{MVC in practice}
 In the analysis section I gave a very high level overview of MVC, this part will detail further into my design on its implementation in python. The first main, basic components of MVC are of course, the model, the view, and the controller. Figure \ref{fig:MVC_class} shows the 3 classes diagrams for each of the implementations of these in python.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \includegraphics[width=0.8\linewidth]{mvc.png}
   \centering
   \caption{Class diagram}
@@ -195,7 +214,7 @@ In the analysis section I gave a very high level overview of MVC, this part will
 
 On top of these key features, there’s also a range of other important cogs in the system. One of the most important, to allow for the communication between the M, V and C are Events, and an event manager. A Sample of events, and the event manager is given in Fig {fig:events}.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \includegraphics[height=0.8\linewidth, angle=270]{events.png}
   \centering
   \caption{Class diagram}
@@ -203,21 +222,21 @@ On top of these key features, there’s also a range of other important cogs in 
 \end{figure}
 
 The other key class is the state machine. Each state is not given its own class, rather there is a constant number which is attributed to a given state. The states are used for the larger changes in the program and events are for the smaller interactions, and ticks.
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \includegraphics[width=0.8\linewidth]{state.png}
   \centering
   \caption{Class diagram}
   \label{fig:MVC_class1}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \includegraphics[width=0.8\linewidth]{class2.png}
   \centering
   \caption{Class diagram of characters}
   \label{fig:classeschars}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \includegraphics[width=0.8\linewidth]{flowchart}
   \centering
   \caption{Flowchart of MVC}
@@ -249,14 +268,14 @@ There are 3 tables, scores, users and tokens. The scores database has 2 fields w
 \section{The API}
 The leaderboard contains only 6 routes, as these were all that are necessary, the details for the routes are detailed in the table below.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \includegraphics[width=0.8\linewidth]{tokens.png}
   \centering
   \caption{How tokens are generated}
   \label{fig:tokens}
 \end{figure}
 
-\begin{table}[h!]
+\begin{table}[!ht]
 \begin{tabular}{|l|l|l|}
 \hline
 \rowcolor[HTML]{C0C0C0} 
@@ -311,7 +330,7 @@ Now we use some functional type programming to efficiently find and update all t
 
 \chapter{Appendix \& Bibliography}
 \section{Appendix}
-\begin{table}[h!]
+\begin{table}[!ht]
 \begin{tabular}{|l|l|l|}
 \hline
 \rowcolor[HTML]{C0C0C0} 
@@ -326,6 +345,11 @@ EC2                                  & Server                                   
 Hetzner                              & Server                                              & Alternative option to run flask and serve files \\ \hline
 PyCharm                              & Dev                                                 & My IDE choice                                   \\ \hline
 \end{tabular}
+\section{Bibliography}
+\bibliographystyle{apalike}
+\bibliography{NEA}
+
+
 \end{table}
 \section{Files and Listings}
 This section will outline the file structure of the project, see the file structure diagram of both the game and website code below
