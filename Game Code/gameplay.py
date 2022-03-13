@@ -144,11 +144,11 @@ def level(view, event):
                     c1 += (playerpos[0] - x1) / 2
                     c2 += (playerpos[1] - y1) / 2
 
-                v1 += grunt.vx
-                v2 += grunt.vy
+                    v1 += grunt.vx
+                    v2 += grunt.vy
 
-                p1 = (playerpos[0]-x1) /5
-                p2 = (playerpos[1]-y1) /5
+                    p1 = (playerpos[0]-x1) /5
+                    p2 = (playerpos[1]-y1) /5
 
             xavg, yavg = xtot/count, ytot/count
             vxavg, vyavg = v1/count, v2/count
@@ -210,7 +210,6 @@ def level(view, event):
         True,
         random.choice(random_colors))
     view.screen.blit(somewords, (SCREENSIZE[0]-170, 5))
-
 
     if view.tickcounter > 30:
         player.getskin(view.skincount)
