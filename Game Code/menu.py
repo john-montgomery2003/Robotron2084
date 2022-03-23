@@ -9,6 +9,16 @@ from constants.const import *
 from event import *
 from states import *
 
+
+def displaySomeText(text, y_coord, font, col, surf):
+    somewords = font.render(
+        text,
+        True,
+        col)
+    width, _ = pygame.font.Font.size(font, text)
+    position_font = (SCREENSIZE[0] - width) / 2
+    surf.screen.blit(somewords, (position_font + 6, y_coord))
+
 _circle_cache = {}
 def _circlepoints(r):
     r = int(round(r))
@@ -30,7 +40,10 @@ def _circlepoints(r):
     points.sort()
     return points
 
-def render(text, font, gfcolor=pygame.Color('dodgerblue'), ocolor=(255, 130, 45), opx=2):
+
+
+
+def render(text, font, gfcolor=pygame.Color('dodgerblue'), ocolor=(255, 130, 45), opx=4):
     textsurface = font.render(text, True, gfcolor).convert_alpha()
     w = textsurface.get_width() + 2 * opx
     h = font.get_height()
@@ -67,27 +80,9 @@ def allopperational(view):
     elif view.tickcounter > 5:
 
         view.screen.fill((10, 10, 10))
-        todisplay1 = '''Initial tests indicate:'''
 
-        todisplay2 = 'Operational'
-
-        somewords1 = view.font.render(
-            todisplay1,
-            True,
-            WHITE)
-
-        somewords2 = view.font.render(
-            todisplay2,
-            True,
-            WHITE)
-
-        width1, _ = pygame.font.Font.size(view.font, todisplay1)
-        position_font1 = (SCREENSIZE[0] - width1) / 2
-        view.screen.blit(somewords1, (position_font1, SCREENSIZE[1]/2-50))
-
-        width2, _ = pygame.font.Font.size(view.font, todisplay2)
-        position_font2 = (SCREENSIZE[0] - width2) / 2
-        view.screen.blit(somewords2, (position_font2, SCREENSIZE[1]/2+50))
+        displaySomeText('Initial tests indicate:', SCREENSIZE[1]/2-50, view.font, WHITE, view)
+        displaySomeText('Operational', SCREENSIZE[1]/2+50, view.font, WHITE, view)
 
     else:
         randomStart(view)
@@ -97,6 +92,7 @@ def allopperational(view):
 
 
 def home(view, event):
+
     view.screen.fill(BLACK)
     view.tickcounter += 1
     if isinstance(event, Keyboard):
@@ -129,85 +125,27 @@ def home(view, event):
             image = pygame.image.load('sprites/2084.png')
             view.screen.blit(image, (196,140))
 
-            somewords = view.smallfont.render(
-                'Created By:',
-                True,
-                (246, 130, 20))
-            width, _ = pygame.font.Font.size(view.smallfont, 'Created By:')
-            position_font = (SCREENSIZE[0] - width) / 2
-            view.screen.blit(somewords, (position_font + 6, 320))
+            displaySomeText('Created By:', 320, view.smallfont, (255,255,255), view)
+            displaySomeText('John Montgomery',360, view.smallfont, (246, 130, 20), view )
 
-            somewords = view.smallfont.render(
-                'John Montgomery',
-                True,
-                (246, 130, 20))
-            width, _ = pygame.font.Font.size(view.smallfont, 'John Montgomery')
-            position_font = (SCREENSIZE[0] - width) / 2
-            view.screen.blit(somewords, (position_font + 6, 360))
             if view.tickcounter % 5 == 0:
                 if view.color == (0,0,0):
                     view.color = (22, 32, 221)
                 else:
                     view.color = (0,0,0)
-            somewords = view.font.render(
-                'SPACE to PLAY',
-                True,
-                view.color )
-            width, _ = pygame.font.Font.size(view.font, 'SPACE to PLAY')
-            position_font = (SCREENSIZE[0] - width) / 2
-            view.screen.blit(somewords, (position_font + 6, 400))
 
-            somewords = view.smallfont.render(
-                'H for HELP',
-                True,
-                (22, 32, 221))
-            width, _ = pygame.font.Font.size(view.smallfont, 'H for HELP')
-            position_font = (SCREENSIZE[0] - width) / 2
-            view.screen.blit(somewords, (position_font + 6, 440))
-
+            displaySomeText('SPACE to PLAY',400, view.font, view.color, view )
+            displaySomeText("Leaderboard Available at - robotron2084.xyz", 510, view.minifont,
+                            random.choice(title_colors), view)
+            displaySomeText("(O to open link)", 540, view.minifont, (255, 255, 255), view)
             try:
                 with open('.token', 'r')as f:
                     text = f.read().split('>')[2]
-                    somewords = view.smallfont.render(
-                        'LOGGED IN AS '+text,
-                        True,
-                        (22, 32, 221))
-                    width, _ = pygame.font.Font.size(view.smallfont, 'LOGGED IN AS '+text)
-                    position_font = (SCREENSIZE[0] - width) / 2
-                    view.screen.blit(somewords, (position_font + 6, 470))
+                    displaySomeText('LOGGED IN AS '+text, 470, view.smallfont, (22, 32, 221), view)
+
             except FileNotFoundError:
-                somewords = view.smallfont.render(
-                    'ENTER for LOGIN',
-                    True,
-                    (22, 32, 221))
-                width, _ = pygame.font.Font.size(view.smallfont, 'ENTER for LOGIN')
-                position_font = (SCREENSIZE[0] - width) / 2
-                view.screen.blit(somewords, (position_font + 6, 470))
-
-            somewords = view.minifont.render(
-                '''Leaderboard Avaliable at - robo.johnmontgomery.tech''',
-                True,
-                random.choice(title_colors))
-            width, _ = pygame.font.Font.size(view.minifont, 'Leaderboard Avaliable at - robo.johnmontgomery.tech')
-            position_font = (SCREENSIZE[0] - width) / 2
-            view.screen.blit(somewords, (position_font + 6, 510))
-
-            somewords = view.minifont.render(
-                '(Press o to open link)',
-                True,
-                (255,255,255))
-            width, _ = pygame.font.Font.size(view.minifont, '(Press o to open link)')
-            position_font = (SCREENSIZE[0] - width) / 2
-            view.screen.blit(somewords, (position_font + 6, 540))
-
-            somewords = view.minifont.render(
-                'ORIGIONAL GAME CREATED BY: WILLIAM ELECTRONICS INC.',
-                True,
-                (246, 130, 20))
-            width, _ = pygame.font.Font.size(view.minifont, 'ORIGIONAL GAME CREATED BY: WILLIAM ELECTRONICS INC.')
-            position_font = (SCREENSIZE[0] - width) / 2
-            view.screen.blit(somewords, (position_font + 6, 570))
-
+                displaySomeText("ENTER FOR LOGIN", 470, view.smallfont, (22, 32, 221), view)
+            displaySomeText('ORIGINAL GAME CREATED BY: WILLIAM ELECTRONICS INC.', 570, view.minifont,(246, 130, 20), view)
     pygame.display.flip()
 
     view.clock.tick(TPS)
@@ -234,29 +172,10 @@ def login(view, event):
 
 
     if view.incorrect:
-        somewords = view.smallfont.render(
-            'INCORRECT',
-            True,
-            (200,0,0))
-        width, _ = pygame.font.Font.size(view.smallfont, 'INCORRECT')
-        position_font = (SCREENSIZE[0] - width) / 2
-        view.screen.blit(somewords, (position_font + 6, view.incorrect))
+        displaySomeText("INCORRECT", view.incorrect, view.smallfont, (200,0,0), view)
 
-    somewords = view.font.render(
-        'LOGIN + SIGN UP',
-        True,
-        (246, 130, 20))
-    width, _ = pygame.font.Font.size(view.font, 'LOGIN + SIGN UP')
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(somewords, (position_font + 6, 20))
-
-    logintext = view.smallfont.render(
-        'LOGIN',
-        True,
-        (255, 255, 255))
-    width, _ = pygame.font.Font.size(view.smallfont, 'LOGIN')
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(logintext, (position_font, 206))
+    displaySomeText('LOGIN + SIGN UP', 20, view.font, (246, 130, 20), view)
+    displaySomeText('LOGIN', 205, view.smallfont, (255, 255, 255), view)
 
     pygame.draw.rect(view.screen, GREY, pygame.Rect(100, 100, 600, 40), width=3)
 
@@ -266,14 +185,8 @@ def login(view, event):
 
     pygame.draw.lines(view.screen, GREY, False, [(30,10),(10,25), (30, 40)], width=5)
 
-    signup = view.smallfont.render(
-        'SIGN UP',
-        True,
-        (255, 255, 255))
-    width, _ = pygame.font.Font.size(view.smallfont, 'SIGN UP')
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(signup, (position_font, 506))
 
+    displaySomeText('SIGN UP', 506, view.smallfont, (255, 255, 255), view)
     pygame.draw.rect(view.screen, GREY, pygame.Rect(100, 300, 600, 40), width=3)
 
     pygame.draw.rect(view.screen, GREY, pygame.Rect(100, 350, 600, 40), width=3)
@@ -375,101 +288,25 @@ def login(view, event):
         pygame.draw.rect(view.screen, RED, pygame.Rect(100, 347, 600, 43), width=5)
         pygame.draw.rect(view.screen, RED, pygame.Rect(100, 397, 600, 43), width=5)
 
-    text = view.tinyfont.render(
-        'username',
-        True,
-        (255, 255, 255))
-    width, _ = pygame.font.Font.size(view.tinyfont, 'username')
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(text, (position_font + 6, 301))
 
-    text = view.minifont.render(
-        view.username1,
-        True,
-        (255, 255, 255))
-    width, _ = pygame.font.Font.size(view.minifont, view.username1)
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(text, (position_font + 6, 311))
 
-    text = view.tinyfont.render(
-        'password',
-        True,
-        (255, 255, 255))
-    width, _ = pygame.font.Font.size(view.tinyfont, 'password')
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(text, (position_font + 6, 351))
+    displaySomeText('username', 301, view.tinyfont, (255, 255, 255), view)
+    displaySomeText(view.username1, 311, view.minifont, (255, 255, 255), view)
+    displaySomeText('password', 351, view.tinyfont, (255, 255, 255), view)
+    displaySomeText('*'*len(view.password1), 361, view.minifont, (255, 255, 255), view)
+    displaySomeText('confirm password', 401, view.tinyfont, (255, 255, 255), view)
+    displaySomeText('*' * len(view.password2), 411, view.minifont, (255, 255, 255), view)
+    displaySomeText('initials', 451, view.tinyfont, (255, 255, 255), view)
+    displaySomeText(view.initials, 461, view.tinyfont, (255, 255, 255), view)
 
-    text = view.minifont.render(
-        '*'*len(view.password1),
-        True,
-        (255, 255, 255))
-    width, _ = pygame.font.Font.size(view.minifont, '*'*len(view.password1))
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(text, (position_font + 6, 361))
 
-    text = view.tinyfont.render(
-        'confirm password',
-        True,
-        (255, 255, 255))
-    width, _ = pygame.font.Font.size(view.tinyfont, 'confirm password')
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(text, (position_font + 6, 401))
+    displaySomeText('username', 101, view.tinyfont, (255, 255, 255), view)
+    displaySomeText(view.username, 111, view.minifont, (255, 255, 255), view)
+    displaySomeText('password', 151, view.tinyfont, (255, 255, 255), view)
+    displaySomeText('*' * len(view.password), 161, view.minifont, (255, 255, 255), view)
 
-    text = view.minifont.render(
-        '*'*len(view.password2),
-        True,
-        (255, 255, 255))
-    width, _ = pygame.font.Font.size(view.minifont, '*'*len(view.password2))
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(text, (position_font + 6, 411))
 
-    text = view.tinyfont.render(
-        'initials',
-        True,
-        (255, 255, 255))
-    width, _ = pygame.font.Font.size(view.tinyfont, 'initials')
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(text, (position_font + 6, 451))
 
-    text = view.minifont.render(
-        view.initials,
-        True,
-        (255, 255, 255))
-    width, _ = pygame.font.Font.size(view.minifont, view.initials)
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(text, (position_font + 6, 461))
-
-    text = view.tinyfont.render(
-        'username',
-        True,
-        (255, 255, 255))
-    width, _ = pygame.font.Font.size(view.tinyfont, 'username')
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(text, (position_font + 6, 101))
-
-    usernametext = view.minifont.render(
-        view.username,
-        True,
-        (255, 255, 255))
-    width, _ = pygame.font.Font.size(view.minifont, view.username)
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(usernametext, (position_font + 6, 111))
-
-    text = view.tinyfont.render(
-        'password',
-        True,
-        (255, 255, 255))
-    width, _ = pygame.font.Font.size(view.tinyfont, 'password')
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(text, (position_font + 6, 151))
-
-    passwordtext = view.minifont.render(
-        len(view.password) * '*',
-        True,
-        (255, 255, 255))
-    width, _ = pygame.font.Font.size(view.minifont, len(view.password) * '*')
-    position_font = (SCREENSIZE[0] - width) / 2
-    view.screen.blit(passwordtext, (position_font + 6, 161))
 
 
     pygame.display.flip()
@@ -514,72 +351,23 @@ def endgame(view, event):
                 else:
                     view.color = (0, 0, 0)
 
-            somewords = view.font.render(
-                'GAME OVER',
-                True,
-                view.color)
-            width, _ = pygame.font.Font.size(view.font, 'GAME OVER')
-            position_font = (SCREENSIZE[0] - width) / 2
-            view.screen.blit(somewords, (position_font + 6, 330))
+            displaySomeText('GAME OVER', 330, view.font, view.color, view)
+            displaySomeText('You Scored:', 400, view.font,  (246, 130, 20), view)
+            displaySomeText(str(view.score), 450, view.font, (246, 130, 20), view)
+            displaySomeText('SPACE for homescreen', 450, view.smallfont, (246, 130, 20), view)
+            displaySomeText('O to open leaderboard', 525, view.smallfont, (246, 130, 20), view)
 
-            somewords = view.font.render(
-                'You scored:',
-                True,
-                (246, 130, 20))
-            width, _ = pygame.font.Font.size(view.font, 'You scored:')
-            position_font = (SCREENSIZE[0] - width) / 2
-            view.screen.blit(somewords, (position_font + 6, 400))
-
-            somewords = view.font.render(
-                str(view.score),
-                True,
-                (246, 130, 20))
-            width, _ = pygame.font.Font.size(view.font, str(view.score))
-            position_font = (SCREENSIZE[0] - width) / 2
-            view.screen.blit(somewords, (position_font + 6, 450))
-
-            somewords = view.smallfont.render(
-                'SPACE for homescreen',
-                True,
-                (246, 130, 20))
-            width, _ = pygame.font.Font.size(view.smallfont, 'SPACE for homescreen')
-            position_font = (SCREENSIZE[0] - width) / 2
-            view.screen.blit(somewords, (position_font + 6, 500))
-
-            somewords = view.smallfont.render(
-                'O to open leaderboard',
-                True,
-                (246, 130, 20))
-            width, _ = pygame.font.Font.size(view.smallfont, 'O to open leaderboard')
-            position_font = (SCREENSIZE[0] - width) / 2
-            view.screen.blit(somewords, (position_font + 6, 525))
 
             if checkonline():
                 if isloggedin():
                     if addscore(view.score):
-                        somewords = view.smallfont.render(
-                            'Score added to leaderboard',
-                            True,
-                            (246, 130, 20))
-                        width, _ = pygame.font.Font.size(view.smallfont, 'Score added to leaderboard')
-                        position_font = (SCREENSIZE[0] - width) / 2
-                        view.screen.blit(somewords, (position_font + 6, 550))
+                        displaySomeText('Score added to leaderboard', 550, view.smallfont, (246, 130, 20), view)
+
                 else:
-                    somewords = view.smallfont.render(
-                        'Enter to log in',
-                        True,
-                        (246, 130, 20))
-                    width, _ = pygame.font.Font.size(view.smallfont, 'Enter to log in')
-                    position_font = (SCREENSIZE[0] - width) / 2
-                    view.screen.blit(somewords, (position_font + 6, 550))
+                    displaySomeText('Enter to log in', 550, view.smallfont, (246, 130, 20), view)
             else:
-                somewords = view.smallfont.render(
-                    'OFFLINE',
-                    True,
-                    RED)
-                width, _ = pygame.font.Font.size(view.smallfont, 'OFFLINE')
-                position_font = (SCREENSIZE[0] - width) / 2
-                view.screen.blit(somewords, (position_font + 6, 550))
+                displaySomeText('OFFLINE', 550, view.smallfont, RED, view)
+
     pygame.display.flip()
 
     view.clock.tick(TPS)
