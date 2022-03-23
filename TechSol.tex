@@ -1,0 +1,181 @@
+This chapter is split into a few sections. The first, is the file tree, and shows what all the files i use are, and how they are structured into the folder. I will then go on to show and explain some very key points in the code, however it is important to note that these snippets, as standalone code wouldnt function, as such, the content of all files of my NEA are also listed here. I will begin the sub section with all the code with a contents containing all the code listings for the NEA, and their page number, path, etc. Finally, the end of this section will be how the code is actually run. It is worth explaining, as it is not an entirely simple process.
+
+\subsection{Folder Layout}
+\dirtree{%
+.1 Robotron2084.
+.2 Game Code.
+.3 audio.
+.4 change.mp3.
+.4 intro.mp3.
+.4 shoot.mp3.
+.3 characters\_module.
+.4 \_\_init\_\_.py.
+.4 characters.py.
+.4 enemy.py.
+.4 humans.py.
+.4 player.py.
+.5 sprites.py.
+.3 constatnts.
+.4 \_\_init\_\_.py.
+.4 colors.py.
+.4 const.py.
+.3 controller.py.
+.3 decorations.
+.4 \_\_init\_\_.py.
+.4 border.py.
+.4 text.py
+.3 event.py
+.3 menu.py.
+.3 model.py.
+.3 objects.
+.4 \_\_init\_\_.py.
+.4 bullet.py.
+.3 font.
+.4 robotron2084.ttf.
+.3 event.py.
+.3 event.py.
+.3 gameplay.py.
+.3 main.py.
+.3 sprites.
+.4 2084.png.
+.4 daddies.png.
+.4 electrode.png.
+.4 grunt.png.
+.4 hulk.png.
+.4 mikeys.png.
+.4 mommies.png.
+.4 player.png.
+.3 statemachine.py.
+.3 states.py.
+.3 views.py.
+.2 Website Code.
+.3 app.py.
+.3 static.
+.4 css.
+.5 styles.css.
+.4 fonts.
+.5 robotron2084.ttf.
+.4 img.
+.5 icon.png.
+.4 js.
+.5 script.min.js.
+.3 templates.
+.4 error.html.
+.4 index.html.
+.3 leaderboard.db.
+.2 requirements.txt.
+}
+
+\subsection{Key Sections}
+\subsubsection{Boids}
+Boids was talked about in design, here is the implementation:
+
+First step is creating the function and and setting variables
+\lstinputlisting[language=Python, firstline=121, lastline=131]{"Game Code/gameplay.py"}
+
+Now we start looping through each grunt (each member of the flock), and checking if it is 'in view' of the current (x) grunt, to do this, calculate the distance between the points and check less than 60 (eg, a grunt has a sight radius of 60) 
+\lstinputlisting[language=Python, firstline=132, lastline=138]{"Game Code/gameplay.py"}
+
+If the boid is in sight then we update our values
+\lstinputlisting[language=Python, firstline=139, lastline=144]{"Game Code/gameplay.py"}
+
+then update these values to reflect the centre of the flock etc
+\lstinputlisting[language=Python, firstline=145, lastline=150]{"Game Code/gameplay.py"}
+
+these last lines calculate and return the final v of the boid (given as $\Delta x, \Delta y$), which can be added to the current position for the new position.
+\lstinputlisting[language=Python, firstline=149, lastline=155]{"Game Code/gameplay.py"}
+
+Now we use some functional type programming to efficiently find and update all the positions
+\lstinputlisting[language=Python, firstline=156, lastline=165]{"Game Code/gameplay.py"}
+
+\subsection{stack}
+
+
+
+
+
+\lstlistoflistings
+
+\subsection{Website Code}
+
+app.py
+\lstinputlisting[language=Python]{"Website Code/app.py"}
+
+index.html
+\lstinputlisting[language=HTML]{"Website Code/templates/index.html"}
+
+error.html
+\lstinputlisting[language=HTML]{"Website Code/templates/error.html"}
+
+styles.css
+\lstinputlisting[language=HTML]{"Website Code/static/css/styles.css"}
+
+
+\subsection{Game Code}
+
+main.py
+\lstinputlisting[language=Python]{"Game Code/main.py"}
+
+eventmanager.py
+\lstinputlisting[language=Python]{"Game Code/eventmanager.py"}
+
+statemachine.py
+\lstinputlisting[language=Python]{"Game Code/statemachine.py"}
+
+model.py
+\lstinputlisting[language=Python]{"Game Code/model.py"}
+
+views.py
+\lstinputlisting[language=Python]{"Game Code/views.py"}
+
+controller.py
+\lstinputlisting[language=Python]{"Game Code/controller.py"}
+
+event.py
+\lstinputlisting[language=Python]{"Game Code/event.py"}
+
+states.py
+\lstinputlisting[language=Python]{"Game Code/states.py"}
+
+menu.py
+\lstinputlisting[language=Python]{"Game Code/menu.py"}
+
+gameplay.py
+\lstinputlisting[language=Python]{"Game Code/gameplay.py"}
+
+APIinteractions.py
+\lstinputlisting[language=Python]{"Game Code/APIinteractions.py"}
+
+\subsubsection{characters\_module}
+characters.py
+\lstinputlisting[language=Python]{"Game Code/characters_module/characters.py"}
+enemy.py
+\lstinputlisting[language=Python]{"Game Code/characters_module/enemy.py"}
+
+humans.py
+\lstinputlisting[language=Python]{"Game Code/characters_module/humans.py"}
+
+player.py
+\lstinputlisting[language=Python]{"Game Code/characters_module/player.py"}
+
+sprites.py
+\lstinputlisting[language=Python]{"Game Code/characters_module/sprites.py"}
+
+\subsubsection{constants}
+
+colors.py
+\lstinputlisting[language=Python]{"Game Code/constants/colors.py"}
+
+const.py
+\lstinputlisting[language=Python]{"Game Code/constants/const.py"}
+
+\subsubsection{decorations}
+border.py
+\lstinputlisting[language=Python]{"Game Code/decorations/border.py"}
+
+\subsubsection{objects}
+bullet.py
+\lstinputlisting[language=Python]{"Game Code/objects/bullet.py"}
+
+text.py
+\lstinputlisting[language=Python]{"Game Code/objects/text.py"}
