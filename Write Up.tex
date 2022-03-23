@@ -10,9 +10,7 @@
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{listings}
 \usepackage{xcolor}
-\usepackage{cite}
 \usepackage{float}
-\usepackage{dirtree}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -126,41 +124,9 @@ Qualification: AQA 7517 (A--Level Computer Science)\\ \\
 \chapter{Technical Solution}
     \input{TechSol.tex}
 
-
-
-\chapter{Testing - TODO}
-\chapter{Evaluation - TODO}
-
-\chapter{Appendix \& Bibliography}
-\section{Appendix}
-\begin{table}[!ht]
-\begin{tabular}{|l|l|l|}
-\hline
-\rowcolor[HTML]{C0C0C0} 
-{\color[HTML]{000000} \textbf{Name}} & {\color[HTML]{000000} \textbf{Server/Web/Game/Dev}} & {\color[HTML]{000000} \textbf{Use}}             \\ \hline
-Flask                                & Server                                              & Handles the API and web on server side          \\ \hline
-SQLalchemy                           & Server                                              & Used to connect to the Postgres database        \\ \hline
-BCrypt                               & Server                                              & Key derivation                                  \\ \hline
-Waitress                             & Server                                              & WSGI server                                     \\ \hline
-PyGame                               & Game                                                & Graphics and input handling                     \\ \hline
-S3                                   & Server                                              & AWS static file hosting / serving               \\ \hline
-EC2                                  & Server                                              & AWS server to run flask app                     \\ \hline
-Hetzner                              & Server                                              & Alternative option to run flask and serve files \\ \hline
-PyCharm                              & Dev                                                 & My IDE choice                                   \\ \hline
-\end{tabular}
-\section{Bibliography}
-\bibliographystyle{apalike}
-\bibliography{NEA}
-
-
-\end{table}
-\section{Files and Listings}
-This section will outline the file structure of the project, see the file structure diagram of both the game and website code below
-
-
-
-
-
-
+\chapter{Testing}
+    \input{Testing.tex}
+\chapter{Evaluation}
+    \input{Eval.tex}
 \end{document}
 
