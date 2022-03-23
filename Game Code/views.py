@@ -98,8 +98,7 @@ class GraphicalView(object):
                 gameplay.level(self, event_in)
 
 
-
-    def rendermenu(self):
+    def clearScreen(self):
         self.screen.fill((0, 0, 0))
 
     def initialize(self):

@@ -1,0 +1,11 @@
+This project is an implementation of the classic arcade game Robotron 2084. It will consist of 2 main parts:
+
+
+The game code itself, which is pygame executed on the client machine, consisting of pygame, with an Model-View-Controller architecture driving it. This means the game consists of 3 discrete sections, the model controlling the games current state, the view controls what is displayed and the controller is what the user interacts with. The game changes through its various states with a finite state machine controlling it. A stack is also used which stores incoming events and future states.
+
+
+There is also a website which displays the top 10 users and their scores. This data is sent from the game code (when the client is online) via an API, users must also login and bcrypt is used to secure thier password. A secure token is generated and stored to verify users are logged in.
+
+
+
+This project is a modernised version of robotron 2084, it has 2 sections, the game code and the website. The game code, which is a remake of Robotron 2084, a classic arcade game, this is backed with an MVC architecture which is designed to separate out the functionalities of the game and communicates with the website via an API. The website will use a database backend to store all the scores and logins and will also be used to display the high scores of users.

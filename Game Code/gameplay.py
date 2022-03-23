@@ -146,9 +146,10 @@ def level(view, event):
 
                     v1 += grunt.vx
                     v2 += grunt.vy
+                    
+            p1 = (playerpos[0]-x1) /5
+            p2 = (playerpos[1]-y1) /5
 
-                    p1 = (playerpos[0]-x1) /5
-                    p2 = (playerpos[1]-y1) /5
 
             xavg, yavg = xtot/count, ytot/count
             vxavg, vyavg = v1/count, v2/count
