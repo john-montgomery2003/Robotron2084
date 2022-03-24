@@ -1,9 +1,9 @@
 \section{Introduction}
 The goal of this project was to create a more modernised version of Robotron: 2084, the classic arcade game from the 80s. In order to make it a more modern version I will make a few additions, including improving the game itself and increase the competition aspect of it. I also needed to modernise the codebase itself, and couldnt build off the existing code written in the 80s.
 
-As i was unable to access the code from the original game, nor find a viable method to emulate the code on my machine, i was forced to take my research from websites, videos and images, and whilst this isnt ideal, i was still able to gain a vast amount of information and replicate the game how i wanted to.
+As I was unable to access the code from the original game, nor find a viable method to emulate the code on my machine, I was forced to take my research from websites, videos and images, and whilst this isnt ideal, I was still able to gain a vast amount of information and replicate the game how I wanted to.
 
-Whilst there is no specific target audience for the project, it could be played and enjoyed by anyone, ranging from my classmates to the people who played and enjoyed the original game from the 80s. Thanks to the wide range of possible users, there is a large market i can test this app with.
+Whilst there is no specific target audience for the project, it could be played and enjoyed by anyone, ranging from my classmates to the people who played and enjoyed the original game from the 80s. Thanks to the wide range of possible users, there is a large market I can test this app with.
 
 \section{About the game}
 
@@ -18,7 +18,7 @@ The game had sequels but none were as successful as the original, and were never
 In order to bring this game into the 21st century, it will need more modernised features. For one, almost everyone plays games on computers, and as such, will need a 'dual stick' implementation. Almost every modern game uses WASD to move and arrows to shoot, but IJKL is also used to shoot. Other approaches to avoid seeming like a single stick shooter are using the mouse to control movement or shooting, or even ESDX and IJKM as move and shoot (this was the original set up for Robotron 2084 on apple products. 
 
 \section{Robotron's Design}
-I mostly used video for my research into robotrons design - this felt like the best way due to how fast the game changes, with fast animations and colour changes, something that cannot be captured easily in photo screenshots. I also relied on websites, also linked, for more technical information and this is where i was also able to learn lots of the history behind the game.
+I mostly used video for my research into robotrons design - this felt like the best way due to how fast the game changes, with fast animations and colour changes, something that cannot be captured easily in photo screenshots. I also relied on websites, also linked, for more technical information and this is where I was also able to learn lots of the history behind the game.
 
 
 \begin{itemize}
@@ -29,13 +29,13 @@ I mostly used video for my research into robotrons design - this felt like the b
     \item \url{https://arcadeblogger.com/2020/06/27/the-development-of-robotron/} This was possibly my most used resource. Having insight into the development and original views of the game was very important, and this website alone would probably have been enough to implement it. 
 \end{itemize}
 
-Whilst i didn't want to build a carbon copy of the original, i did endeavour to create something as similar as i could without loosing too much of the fast paced nature of the game.
+Whilst I didn't want to build a carbon copy of the original, I did endeavour to create something as similar as I could without loosing too much of the fast paced nature of the game.
 
 
 \section{Robotron Step by Step}
-Robotron starts up with a pattern of random pixels, followed by a screen indicating that tests were successful (or, as it may be, unsuccessful), before finally transitioning to the start screen. This screen has the words Robotron, along with credits to the developer. It is very bright, and flashing. The game also has a high score board displaying at the end of every run (and i believe it would also display at times when the machine was not in game). When starting the game, it would show a level transition screen (bright rectangles would display from the centre of the screen moving out). A wave would then start. This would begin by displaying all character, but not allowing movement of enemies for a few moments (this is probably a design choice, a brief moment for the player to plan their first few movements, and analyse where they should head). The levels would then loop like this, with a transition showing between each.
+Robotron starts up with a pattern of random pixels, followed by a screen indicating that tests were successful (or, as it may be, unsuccessful), before finally transitioning to the start screen. This screen has the words Robotron, along with credits to the developer. It is very bright, and flashing. The game also has a high score board displaying at the end of every run (and I believe it would also display at times when the machine was not in game). When starting the game, it would show a level transition screen (bright rectangles would display from the centre of the screen moving out). A wave would then start. This would begin by displaying all character, but not allowing movement of enemies for a few moments (this is probably a design choice, a brief moment for the player to plan their first few movements, and analyse where they should head). The levels would then loop like this, with a transition showing between each.
 
-To illustrate the game layout better, i have included a finite state machine of how the game would work, it can be found below in \ref{fig:Robotron_FSM}.
+To illustrate the game layout better, I have included a finite state machine of how the game would work, it can be found below in \ref{fig:Robotron_FSM}.
 
 \begin{figure}[ht!]
   \includegraphics[width=0.8\linewidth]{Figures/FSM_robotrom.png}
@@ -46,7 +46,7 @@ To illustrate the game layout better, i have included a finite state machine of 
 
 
 \section{Enemy Specific Behaviour}
-One problem with not having access to the original code is the inability to tell what algorithm was used to cause the grunt enemy to 'flock' to the player (the only enemy I will implement which is actively seeking to get to the player) there are a few ways i could have done this, almost all of them much more simple than the method I would end up on.
+One problem with not having access to the original code is the inability to tell what algorithm was used to cause the grunt enemy to 'flock' to the player (the only enemy I will implement which is actively seeking to get to the player) there are a few ways I could have done this, almost all of them much more simple than the method I would end up on.
 
 A very basic approach to creating something like this is to simply move in the direction of the player, at a speed of x pixels per blit. This would have lead to some issues though. The main one being crowding. This would allow lots of grunts to 'stack', making it easier to kill them (a stream of bullets into this stack, and they are all destroyed). As such, this was rejected. I considered adding a random element to this (like having them move at a random speed, or adding some random direction) - but this would risk the grunts becoming jittery.
 
@@ -65,16 +65,16 @@ This is also somewhat complex but works like Rule 1. We want to have the boids a
 This rule is easy. Find the distance to the player, and move about a 5th of the way there.
 
 \subsection{Notes on boids}
-I did not create the boids flocking algorithm. It was created by Craig Reynolds, \url{http://www.red3d.com/cwr/boids/} is where i pulled most of my information from. This is a tweaked version from the original, with altered values that i set to perform more how i wanted (eg, to emulate a hoard of robots over flocking birds) and with the added rule of moving towards a player. 
+I did not create the boids flocking algorithm. It was created by Craig Reynolds, \url{http://www.red3d.com/cwr/boids/} is where I pulled most of my information from. This is a tweaked version from the original, with altered values that I set to perform more how I wanted (eg, to emulate a hoard of robots over flocking birds) and with the added rule of moving towards a player. 
 
 \section{Python Library selection}
-I had to select python libraries to handle 2 large sections of my code, these were the web framework and the gui framework. These both are hugely popular areas of python development, and there are a multitude of frameworks which i would have used, but there were 2 major contenders for each.
+I had to select python libraries to handle 2 large sections of my code, these were the web framework and the gui framework. These both are hugely popular areas of python development, and there are a multitude of frameworks which I would have used, but there were 2 major contenders for each.
 
 \subsection{Web Framework Library}
 This was a relatively simple choice, flask or django. I had already decided that this would be a relatively simple website with a need for a larger focus to the API, and less need for web content. As such, django makes less sense, and flask is much faster, so this was quite an easy solution to use. In the past I've also found flask easier to deploy and debug, certainly it was my preference of backend anyway - but it also made sense.
 
 \subsection{GUI Library}
-Python has a few possible libraries, but again, 2 main contenders. TkInter and PyGame. TkInter is built in, and i have used it in the past, but when I used it, I used it for fairly basic forms, and at most, a chess game. These were no fast paced, and I wasnt convinced it would handle the huge number of sprites and fast moving objects. As such, I decided to go with Pygame, which is much better suited to this.
+Python has a few possible libraries, but again, 2 main contenders. TkInter and PyGame. TkInter is built in, and I have used it in the past, but when I used it, I used it for fairly basic forms, and at most, a chess game. These were no fast paced, and I wasnt convinced it would handle the huge number of sprites and fast moving objects. As such, I decided to go with Pygame, which is much better suited to this.
 
 \section{Game Code Architecture}
 Selecting an architecture was important. It was clear from the get go that this project would heavily use OOP, as it made sense, not just for sprites in general but also for its ease of use with pygame. I could have had a very simple system with a game loop and processing in there. I eventually settled on a specific design, and that was MVC (Model-View-Controller) as an architecture for the game.  This divides the logic into 3 components, 1, the model, which handles all the data, and is esentially the 'backend' of the game; 2, the view, this is the part the user sees, and is fed from the model, and finally, the controller, which is how the user interacts with the machine, and this feeds the model. 
