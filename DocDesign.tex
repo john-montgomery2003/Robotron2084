@@ -1,5 +1,5 @@
 \section{Introduction}
-This section will talk about all the design choices made in the creation of my Robotron inspired remake. This primarily includes a hierarchy chart, consisting of my objectives. However, it is important to note that this is more of a structure of how each objective interacts. The system interacts through MVC, and as such, i will also focus heavily (but in a different section) into the way in which MVC actually works, on a lower level, using pseudo code and diagrams to explain the entire system workings. This has been separated out of the hierarchy charts to avoid confusion.
+This section will talk about all the design choices made in the creation of my Robotron inspired remake. This primarily includes a hierarchy chart, consisting of my objectives. However, it is important to note that this is more of a structure of how each objective interacts. The system interacts through MVC, and as such, I will also focus heavily (but in a different section) into the way in which MVC actually works, on a lower level, using pseudo code and diagrams to explain the entire system workings. This has been separated out of the hierarchy charts to avoid confusion.
 
 \section{Hierarchy Charts}
 The first chart sets the layout for the others. The chart had to be divided into smaller sections to allow for readability and easier implementation guidance. 
@@ -150,7 +150,7 @@ This project stores data in 2 ways. First, some data is stored in levels.csv, bu
 \section{Data Structures}
 
 \subsection{Stack}
-A stack is a LIFO (last in, first out) data structure. It quite literally acts as a stack of objects. This is what the state machine uses to transition between and store states. This is implemented with a list, objects are both added to and removed from the end, so this is rather simple, but i have included the pseudocode below. 
+A stack is a LIFO (last in, first out) data structure. It quite literally acts as a stack of objects. This is what the state machine uses to transition between and store states. This is implemented with a list, objects are both added to and removed from the end, so this is rather simple, but I have included the pseudocode below. 
 
 \begin{lstlisting}
 CLASS StateMachine
@@ -226,7 +226,7 @@ This diagram shows the database design. It is quite simple, and consists of 2 on
 \end{figure}
 
 \subsection{Queries}
-This section will detail all the queries used in the code, in order of how they are found in the file, it just so happens this is also essentially in order of the complexity. The first query is run every time the flask server is run. By using 'IF NOT EXISTS' i am able to ensure that the table will be there when needed, but also that restarting the server will not remove any data which is stored in the file. 
+This section will detail all the queries used in the code, in order of how they are found in the file, it just so happens this is also essentially in order of the complexity. The first query is run every time the flask server is run. By using 'IF NOT EXISTS' I am able to ensure that the table will be there when needed, but also that restarting the server will not remove any data which is stored in the file. 
 
 \begin{figure}[H]
     \begin{lstlisting}[language=SQL, style=mystyle1]
