@@ -144,7 +144,11 @@ The states are also needed, the view uses these most of all. The states help it 
 The project needs security in a few spots. For example, it uses bcrypt, a key derivation algorithm to store passwords. This is much more effective than simply just hashing. It hashes the password, along with salting it, to make it invulnerable to rainbow tables. It then repeats, over and over. This means it takes time to calculate. The idea of a key derivation algorithm over a simple hashing algorithm like SHA is to make computing the result difficult. 
 
 Another aspect where security will be important is in the token generation. If it were possible to guess the token, then a user could authenticate as a different user. As such, I use secrets, specifically the token\_urlsafe, to generate a cryptographically secure, 30 character token. 
+
+\section{Storing Data}
+This project stores data in 2 ways. First, some data is stored in levels.csv, but this is hard coded and not changed through the games running. .tokens is a file (hidden to users with the file name starting with a .) which stores the token. It isnt an issue for this to be stored plain text, so it stored in the file, along with the user name, separated with a > between them.
 \section{Data Structures}
+
 \subsection{Stack}
 A stack is a LIFO (last in, first out) data structure. It quite literally acts as a stack of objects. This is what the state machine uses to transition between and store states. This is implemented with a list, objects are both added to and removed from the end, so this is rather simple, but i have included the pseudocode below. 
 
