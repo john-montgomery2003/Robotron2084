@@ -9,7 +9,9 @@ from constants.const import *
 from event import *
 from states import *
 
-
+"""
+https://stackoverflow.com/questions/54363047/how-to-draw-outline-on-the-fontpygame
+"""
 def displaySomeText(text, y_coord, font, col, surf):
     somewords = font.render(
         text,
