@@ -8,19 +8,18 @@ class EventManager:
 
     def __init__(self):
         """
-        Weak ref stops us needing to remove objects from the dict as they will end up deleted when the objects instance  is used. This will stop the dict becoming bloated and stop me from needing to remember to remove items from it.
         """
         self.listeners = []
 
     def add_listener(self, listener):
         """
-        This adds an object as a listener--in-place --aggressive --aggressive
+        This adds an object as a listener
         """
         self.listeners.append(listener)
 
     def remove_listener(self, listener):
         """
-        This is to stop objects listening, but due to the weak referencing it doesnt end up used much
+        This is to stop objects listening.
         """
 
         if listener in self.listeners:

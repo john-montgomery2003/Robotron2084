@@ -84,18 +84,15 @@ def leader():
     """
     # This returns a Result Proxy object...
     leaders = db.execute('''SELECT leaderboard.initials, scores
-FROM leaderboard
-LEFT JOIN scores
-ON leaderboard.id = scores.id
-ORDER BY scores DESC
-LIMIT 10;''')
+        FROM leaderboard
+        LEFT JOIN scores
+        ON leaderboard.id = scores.id
+        ORDER BY scores DESC
+        LIMIT 10;''')
     # ...so we convert it into a dictionary
-    a , d= [], {}
+    a, d = [], {}
     for lead in leaders:
-        for column, value in lead.items():
-            d = {**d, **{column: value}}
-        a.append(d)
-
+        a.append({"initials": lead[0], "scores": lead[1]})
     return jsonify(a)
 
 
